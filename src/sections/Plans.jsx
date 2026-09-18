@@ -4,6 +4,7 @@ import Button from '../components/Button'
 import { Reveal, RevealGroup, RevealItem } from '../components/Reveal'
 import Section from '../components/Section'
 import { householdSizes, plans } from '../data/plans'
+import { useComboBuilder } from '../hooks/useComboBuilder'
 
 const currency = new Intl.NumberFormat('en-IN')
 
@@ -57,7 +58,7 @@ function FeatureRow({ label, included }) {
   )
 }
 
-function PlanCard({ plan, multiplier }) {
+function PlanCard({ plan, multiplier, chosen, onChoose }) {
   const price = priceFor(plan, multiplier)
   const original = originalPriceFor(plan, multiplier)
 
@@ -67,7 +68,7 @@ function PlanCard({ plan, multiplier }) {
         plan.highlighted
           ? 'border-leaf shadow-lift lg:-translate-y-3'
           : 'border-leaf/15 shadow-soft hover:-translate-y-1 hover:shadow-lift'
-      }`}
+      } ${chosen ? 'ring-2 ring-leaf' : ''}`}
     >
       {plan.highlighted && (
         <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-leaf px-4 py-1 text-xs font-bold uppercase tracking-wide text-cream shadow-soft">
@@ -110,10 +111,11 @@ function PlanCard({ plan, multiplier }) {
 
       <Button
         href="#combo-builder"
+        onClick={onChoose}
         variant={plan.highlighted ? 'primary' : 'secondary'}
         className="mt-auto w-full"
       >
-        Choose {plan.name}
+        {chosen ? 'Chosen · build your box' : `Choose ${plan.name}`}
       </Button>
     </div>
   )
@@ -122,6 +124,7 @@ function PlanCard({ plan, multiplier }) {
 function Plans() {
   const [sizeId, setSizeId] = useState('small')
   const activeSize = householdSizes.find((size) => size.id === sizeId) ?? householdSizes[0]
+  const { state, setPlan } = useComboBuilder()
 
   return (
     <Section
@@ -152,7 +155,12 @@ function Plans() {
       <RevealGroup className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3 md:items-start md:gap-6 lg:gap-8">
         {plans.map((plan) => (
           <RevealItem key={plan.id}>
-            <PlanCard plan={plan} multiplier={activeSize.multiplier} />
+            <PlanCard
+              plan={plan}
+              multiplier={activeSize.multiplier}
+              chosen={state.planId === plan.id}
+              onChoose={() => setPlan(plan.id)}
+            />
           </RevealItem>
         ))}
       </RevealGroup>

@@ -5,6 +5,8 @@ import Button from '../components/Button'
 import { Reveal } from '../components/Reveal'
 import Section from '../components/Section'
 import { servicePincodes } from '../data/pincodes'
+import { useComboBuilder } from '../hooks/useComboBuilder'
+import { buildNotifyMessage, waLink } from '../utils/whatsapp'
 
 const PINCODE_REGEX = /^[1-9][0-9]{5}$/
 
@@ -17,6 +19,7 @@ function DeliveryCheck() {
   const [notifyValue, setNotifyValue] = useState('')
   const [notifySent, setNotifySent] = useState(false)
   const reduceMotion = useReducedMotion()
+  const { setPincode: savePincode } = useComboBuilder()
 
   function handleCheck(event) {
     event.preventDefault()
@@ -24,13 +27,16 @@ function DeliveryCheck() {
       setStatus('invalid')
       return
     }
-    setStatus(servicePincodes.includes(pincode) ? 'available' : 'unavailable')
+    const available = servicePincodes.includes(pincode)
+    setStatus(available ? 'available' : 'unavailable')
+    savePincode(available ? pincode : '')
     setNotifySent(false)
   }
 
   function handleNotify(event) {
     event.preventDefault()
     if (!notifyValue.trim()) return
+    window.open(waLink(buildNotifyMessage(pincode, notifyValue.trim())), '_blank', 'noopener,noreferrer')
     setNotifySent(true)
   }
 
@@ -104,7 +110,7 @@ function DeliveryCheck() {
 
             {notifySent ? (
               <p className="mt-4 text-center text-sm font-semibold text-success">
-                Thanks! We&rsquo;ll let you know the moment we reach you.
+                Thanks! Send that WhatsApp message and we&rsquo;ll ping you the moment we reach you.
               </p>
             ) : (
               <form onSubmit={handleNotify} className="mt-4 flex flex-col gap-2 sm:flex-row">

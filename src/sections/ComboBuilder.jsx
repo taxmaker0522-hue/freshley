@@ -5,8 +5,10 @@ import ProduceCard from '../components/ProduceCard'
 import ProduceGlyph from '../components/ProduceGlyph'
 import { Reveal } from '../components/Reveal'
 import Section from '../components/Section'
+import { plans } from '../data/plans'
 import { vegetables, leafyGreens, fruits } from '../data/produce'
 import { presets } from '../data/presets'
+import { buildBoxMessage, waLink } from '../utils/whatsapp'
 import { DELIVERY_SLOTS, FREQUENCIES, LIMITS, useComboBuilder } from '../hooks/useComboBuilder'
 
 const TABS = [
@@ -43,6 +45,8 @@ function OptionGroup({ label, options, value, onChange }) {
 function SummaryContent({ combo }) {
   const { selectedItems, pricePerDay, monthlyTotal, frequency, state, toggleItem, setFrequency, setDeliverySlot, isComplete } =
     combo
+
+  const chosenPlan = plans.find((plan) => plan.id === state.planId)
 
   const categoryOf = (id) => {
     if (state.vegetables.includes(id)) return 'vegetables'
@@ -87,6 +91,34 @@ function SummaryContent({ combo }) {
       <OptionGroup label="Frequency" options={FREQUENCIES} value={state.frequency} onChange={setFrequency} />
       <OptionGroup label="Delivery slot" options={DELIVERY_SLOTS} value={state.deliverySlot} onChange={setDeliverySlot} />
 
+      <ul className="flex flex-col gap-2 text-sm">
+        <li className="flex items-center justify-between gap-2">
+          <span className="text-secondary">Plan</span>
+          {chosenPlan ? (
+            <span className="font-medium text-soil">
+              {chosenPlan.name} ·{' '}
+              <a href="#plans" className="font-semibold text-leaf hover:underline">
+                change
+              </a>
+            </span>
+          ) : (
+            <a href="#plans" className="font-semibold text-leaf hover:underline">
+              Choose a plan
+            </a>
+          )}
+        </li>
+        <li className="flex items-center justify-between gap-2">
+          <span className="text-secondary">Pincode</span>
+          {state.pincode ? (
+            <span className="font-medium text-soil">{state.pincode} ✓</span>
+          ) : (
+            <a href="#delivery-check" className="font-semibold text-leaf hover:underline">
+              Check delivery
+            </a>
+          )}
+        </li>
+      </ul>
+
       <div className="border-t border-leaf/15 pt-4">
         <div className="flex items-center justify-between text-sm text-secondary">
           <span>Per day</span>
@@ -99,14 +131,20 @@ function SummaryContent({ combo }) {
       </div>
 
       <div>
-        <Button href={isComplete ? '#plans' : undefined} aria-disabled={!isComplete} className="w-full">
+        <Button
+          href={isComplete ? waLink(buildBoxMessage(combo)) : undefined}
+          target={isComplete ? '_blank' : undefined}
+          rel="noreferrer noopener"
+          aria-disabled={!isComplete}
+          className="w-full"
+        >
           Subscribe to this box
         </Button>
-        {!isComplete && (
-          <p className="mt-2 text-center text-sm text-secondary">
-            Pick 3 vegetables and 2 leafy greens to continue.
-          </p>
-        )}
+        <p className="mt-2 text-center text-sm text-secondary">
+          {isComplete
+            ? 'Opens WhatsApp with your box details filled in.'
+            : 'Pick 3 vegetables and 2 leafy greens to continue.'}
+        </p>
       </div>
     </div>
   )

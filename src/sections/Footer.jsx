@@ -1,3 +1,5 @@
+import { site } from '../data/site'
+
 function LeafMark(props) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
@@ -46,11 +48,13 @@ function WhatsAppIcon(props) {
   )
 }
 
+const whatsappHref = `https://wa.me/${site.whatsappNumber}`
+
 const socialLinks = [
   { label: 'Instagram', href: 'https://instagram.com/freshley.in', icon: InstagramIcon },
   { label: 'Facebook', href: 'https://facebook.com/freshley.in', icon: FacebookIcon },
   { label: 'X (Twitter)', href: 'https://x.com/freshley_in', icon: XIcon },
-  { label: 'WhatsApp', href: 'https://wa.me/919000000000', icon: WhatsAppIcon },
+  { label: 'WhatsApp', href: whatsappHref, icon: WhatsAppIcon },
 ]
 
 const quickLinks = [
@@ -121,7 +125,7 @@ function Footer() {
               </li>
               <li>
                 <a
-                  href="https://wa.me/919000000000"
+                  href={whatsappHref}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="transition-colors hover:text-lime"

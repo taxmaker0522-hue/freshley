@@ -1,9 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useComboBuilder } from '../hooks/useComboBuilder'
 import { useMiniCartVisible } from '../hooks/useMiniCart'
-
-// Placeholder business WhatsApp number — replace with the real one before launch.
-const WHATSAPP_NUMBER = '919000000000'
+import { buildBoxMessage, buildGenericMessage, waLink } from '../utils/whatsapp'
 
 function WhatsAppIcon(props) {
   return (
@@ -13,25 +11,16 @@ function WhatsAppIcon(props) {
   )
 }
 
-function buildMessage(selectedItems, pricePerDay) {
-  if (selectedItems.length === 0) {
-    return "Hi Freshley! I'd like to know more about your daily vegetable box."
-  }
-  const itemList = selectedItems.map((item) => `${item.emoji} ${item.name}`).join(', ')
-  return `Hi Freshley! I've built a box: ${itemList}. That's about ₹${pricePerDay}/day. Can you help me subscribe?`
-}
-
 function WhatsAppButton() {
   const reduceMotion = useReducedMotion()
-  const { selectedItems, pricePerDay } = useComboBuilder()
+  const combo = useComboBuilder()
   const miniCartVisible = useMiniCartVisible()
 
-  const message = buildMessage(selectedItems, pricePerDay)
-  const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+  const message = combo.selectedItems.length > 0 ? buildBoxMessage(combo) : buildGenericMessage()
 
   return (
     <motion.a
-      href={href}
+      href={waLink(message)}
       target="_blank"
       rel="noreferrer noopener"
       aria-label="Chat with us on WhatsApp"

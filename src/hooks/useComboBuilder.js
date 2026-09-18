@@ -26,6 +26,8 @@ const DEFAULT_STATE = {
   fruits: [],
   frequency: 'daily',
   deliverySlot: '6-7',
+  planId: null,
+  pincode: '',
 }
 
 const produceById = new Map(allProduce.map((item) => [item.id, item]))
@@ -97,6 +99,14 @@ function setDeliverySlot(id) {
   setState({ ...state, deliverySlot: id })
 }
 
+function setPlan(id) {
+  setState({ ...state, planId: id })
+}
+
+function setPincode(code) {
+  setState({ ...state, pincode: code })
+}
+
 export function useComboBuilder() {
   const snapshot = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
   const [blockedId, setBlockedId] = useState(null)
@@ -136,6 +146,8 @@ export function useComboBuilder() {
     applyPreset,
     setFrequency,
     setDeliverySlot,
+    setPlan,
+    setPincode,
     blockedId,
     selectedItems,
     pricePerDay,
