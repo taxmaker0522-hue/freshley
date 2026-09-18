@@ -1,4 +1,6 @@
 import { motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react'
+import { RevealGroup, RevealItem } from '../components/Reveal'
+import Section from '../components/Section'
 
 function NoPesticideIcon(props) {
   return (
@@ -90,7 +92,7 @@ const features = [
   },
 ]
 
-function TiltCard({ icon: Icon, title, description, variants }) {
+function TiltCard({ icon: Icon, title, description }) {
   const reduceMotion = useReducedMotion()
   const rotateX = useMotionValue(0)
   const rotateY = useMotionValue(0)
@@ -113,11 +115,10 @@ function TiltCard({ icon: Icon, title, description, variants }) {
 
   return (
     <motion.div
-      variants={variants}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX: springX, rotateY: springY, transformPerspective: 800 }}
-      className="flex flex-col items-center gap-3 rounded-2xl border border-leaf/15 bg-surface p-4 text-center shadow-soft will-change-transform lg:p-5"
+      className="flex h-full flex-col items-center gap-3 rounded-2xl border border-leaf/15 bg-surface p-4 text-center shadow-soft transition-shadow duration-200 will-change-transform hover:shadow-lift lg:p-5"
     >
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-lime/20 text-leaf shadow-[inset_0_1px_0_rgb(255_255_255/0.6)]">
         <Icon className="h-6 w-6" />
@@ -129,37 +130,16 @@ function TiltCard({ icon: Icon, title, description, variants }) {
 }
 
 function TrustStrip() {
-  const reduceMotion = useReducedMotion()
-
-  const containerVariants = {
-    hidden: {},
-    show: { transition: { staggerChildren: reduceMotion ? 0 : 0.08 } },
-  }
-
-  const itemVariants = {
-    hidden: reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: reduceMotion ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] },
-    },
-  }
-
   return (
-    <motion.section
-      id="trust"
-      className="scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-16 lg:py-20"
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.2 }}
-      variants={containerVariants}
-    >
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+    <Section id="trust" band="surface">
+      <RevealGroup className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
         {features.map((feature) => (
-          <TiltCard key={feature.title} {...feature} variants={itemVariants} />
+          <RevealItem key={feature.title} className="h-full">
+            <TiltCard {...feature} />
+          </RevealItem>
         ))}
-      </div>
-    </motion.section>
+      </RevealGroup>
+    </Section>
   )
 }
 

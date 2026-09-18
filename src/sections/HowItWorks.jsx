@@ -1,5 +1,7 @@
 import { useRef } from 'react'
-import { motion, useReducedMotion, useScroll } from 'motion/react'
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import { RevealGroup, RevealItem } from '../components/Reveal'
+import Section from '../components/Section'
 
 function BoxIcon(props) {
   return (
@@ -64,11 +66,6 @@ const steps = [
   },
 ]
 
-const containerVariants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12 } },
-}
-
 function HowItWorks() {
   const containerRef = useRef(null)
   const reduceMotion = useReducedMotion()
@@ -76,73 +73,62 @@ function HowItWorks() {
     target: containerRef,
     offset: ['start 0.75', 'end 0.4'],
   })
-
-  const itemVariants = {
-    hidden: reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: reduceMotion ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] },
-    },
-  }
+  const headPosition = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   return (
-    <section
+    <Section
       id="how-it-works"
-      className="scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-16 lg:py-24"
+      eyebrow="How it works"
+      title="From the field to your kitchen"
+      intro="Four steps, one morning. No warehouse in between."
     >
-      <div className="text-center">
-        <h2 className="font-heading text-3xl font-semibold text-soil sm:text-4xl">
-          How it works
-        </h2>
-        <p className="mx-auto mt-3 max-w-md text-secondary">
-          From your box to your doorstep, in four simple steps.
-        </p>
-      </div>
-
       <div ref={containerRef} className="relative mt-16">
         <div className="pointer-events-none absolute left-6 top-6 bottom-6 w-0.5 bg-leaf/15 md:hidden">
           <motion.div
             className="h-full w-full origin-top bg-leaf"
             style={{ scaleY: reduceMotion ? 1 : scrollYProgress }}
           />
+          {!reduceMotion && (
+            <motion.span
+              className="absolute left-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime shadow-[0_0_0_4px_rgb(163_217_119/0.35)]"
+              style={{ top: headPosition }}
+            />
+          )}
         </div>
 
-        <div className="pointer-events-none absolute left-6 right-6 top-6 hidden h-0.5 bg-leaf/15 md:block">
+        <div className="pointer-events-none absolute left-[12.5%] right-[12.5%] top-6 hidden h-0.5 bg-leaf/15 md:block">
           <motion.div
             className="h-full w-full origin-left bg-leaf"
             style={{ scaleX: reduceMotion ? 1 : scrollYProgress }}
           />
+          {!reduceMotion && (
+            <motion.span
+              className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime shadow-[0_0_0_4px_rgb(163_217_119/0.35)]"
+              style={{ left: headPosition }}
+            />
+          )}
         </div>
 
-        <motion.div
-          className="relative flex flex-col gap-10 md:flex-row md:justify-between md:gap-6"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={containerVariants}
-        >
+        <RevealGroup className="relative flex flex-col gap-12 md:grid md:grid-cols-4 md:gap-6" stagger={0.12}>
           {steps.map((step, index) => (
-            <motion.div
-              key={step.title}
-              variants={itemVariants}
-              className="relative flex gap-4 md:flex-col md:items-center md:gap-3 md:px-4 md:text-center"
-            >
-              <span className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-4 border-cream bg-leaf text-cream shadow-soft">
-                <step.icon className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-leaf">
-                  Step {index + 1}
-                </p>
-                <h3 className="mt-1 font-heading text-lg font-semibold text-soil">{step.title}</h3>
-                <p className="mt-1 max-w-56 text-sm text-secondary">{step.description}</p>
+            <RevealItem key={step.title}>
+              <div className="relative flex gap-4 md:flex-col md:items-center md:gap-3 md:px-2 md:text-center">
+                <span className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-4 border-cream bg-leaf text-cream shadow-soft">
+                  <step.icon className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-leaf">
+                    Step {index + 1}
+                  </p>
+                  <h3 className="mt-1 font-heading text-lg font-semibold text-soil">{step.title}</h3>
+                  <p className="mt-1 max-w-56 text-sm text-secondary md:mx-auto">{step.description}</p>
+                </div>
               </div>
-            </motion.div>
+            </RevealItem>
           ))}
-        </motion.div>
+        </RevealGroup>
       </div>
-    </section>
+    </Section>
   )
 }
 

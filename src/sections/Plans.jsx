@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useReducedMotion, useSpring } from 'motion/react'
 import Button from '../components/Button'
+import { Reveal, RevealGroup, RevealItem } from '../components/Reveal'
+import Section from '../components/Section'
 import { householdSizes, plans } from '../data/plans'
 
 const currency = new Intl.NumberFormat('en-IN')
@@ -122,16 +124,14 @@ function Plans() {
   const activeSize = householdSizes.find((size) => size.id === sizeId) ?? householdSizes[0]
 
   return (
-    <section id="plans" className="scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-16 lg:py-24">
-      <div className="text-center">
-        <h2 className="font-heading text-3xl font-semibold text-soil sm:text-4xl">
-          Simple plans, honest prices
-        </h2>
-        <p className="mx-auto mt-3 max-w-lg text-secondary">
-          No lock-ins, no fine print. Pick a plan, build your box, pause whenever life happens.
-        </p>
-      </div>
-
+    <Section
+      id="plans"
+      band="lime"
+      eyebrow="Plans"
+      title="Simple plans, honest prices"
+      intro="No lock-ins, no fine print. Pick a plan, build your box, pause whenever life happens."
+    >
+      <Reveal>
       <div role="radiogroup" aria-label="Household size" className="mt-8 flex flex-wrap justify-center gap-2">
         {householdSizes.map((size) => (
           <Button
@@ -147,13 +147,16 @@ function Plans() {
           </Button>
         ))}
       </div>
+      </Reveal>
 
-      <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3 md:items-start md:gap-6 lg:gap-8">
+      <RevealGroup className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3 md:items-start md:gap-6 lg:gap-8">
         {plans.map((plan) => (
-          <PlanCard key={plan.id} plan={plan} multiplier={activeSize.multiplier} />
+          <RevealItem key={plan.id}>
+            <PlanCard plan={plan} multiplier={activeSize.multiplier} />
+          </RevealItem>
         ))}
-      </div>
-    </section>
+      </RevealGroup>
+    </Section>
   )
 }
 

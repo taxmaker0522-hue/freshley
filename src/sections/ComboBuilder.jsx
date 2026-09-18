@@ -3,6 +3,8 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Button from '../components/Button'
 import ProduceCard from '../components/ProduceCard'
 import ProduceGlyph from '../components/ProduceGlyph'
+import { Reveal } from '../components/Reveal'
+import Section from '../components/Section'
 import { vegetables, leafyGreens, fruits } from '../data/produce'
 import { presets } from '../data/presets'
 import { DELIVERY_SLOTS, FREQUENCIES, LIMITS, useComboBuilder } from '../hooks/useComboBuilder'
@@ -123,26 +125,21 @@ function ComboBuilder() {
   const limitReached = currentCount >= currentLimit.max
 
   return (
-    <section
+    <Section
       id="combo-builder"
-      className="scroll-mt-24 mx-auto max-w-7xl px-4 pb-28 pt-16 sm:px-6 lg:px-16 lg:pb-20 lg:pt-24"
+      align="left"
+      eyebrow="Build your box"
+      title="Build your daily box"
+      intro="Pick 3 vegetables, 2 leafy greens or herbs, and up to 2 fruits — or start from a preset."
+      className="pb-20 lg:pb-0"
     >
-      <div>
-        <h2 className="font-heading text-3xl font-semibold text-soil sm:text-4xl">
-          Build your daily box
-        </h2>
-        <p className="mt-3 max-w-xl text-secondary">
-          Pick 3 vegetables, 2 leafy greens or herbs, and up to 2 fruits — or start from a preset.
-        </p>
-      </div>
-
-      <div className="mt-6 flex flex-wrap gap-2">
+      <Reveal className="mt-6 flex flex-wrap gap-2">
         {presets.map((preset) => (
           <Button key={preset.id} variant="ghost" size="sm" onClick={() => combo.applyPreset(preset)}>
             {preset.label}
           </Button>
         ))}
-      </div>
+      </Reveal>
 
       <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-start lg:gap-10">
         <div className="lg:col-span-2">
@@ -236,7 +233,7 @@ function ComboBuilder() {
           </AnimatePresence>
         </div>
       </div>
-    </section>
+    </Section>
   )
 }
 

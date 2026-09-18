@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import Blob from '../components/Blob'
 import Button from '../components/Button'
+import { Reveal } from '../components/Reveal'
+import Section from '../components/Section'
 import { servicePincodes } from '../data/pincodes'
 
 const PINCODE_REGEX = /^[1-9][0-9]{5}$/
@@ -32,15 +35,15 @@ function DeliveryCheck() {
   }
 
   return (
-    <section
+    <Section
       id="delivery-check"
-      className="scroll-mt-24 mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:py-24"
+      width="narrow"
+      eyebrow="Delivery areas"
+      title="Do we deliver to you?"
+      intro="Enter your pincode and find out in a second."
     >
-      <h2 className="font-heading text-3xl font-semibold text-soil sm:text-4xl">
-        Do we deliver to you?
-      </h2>
-      <p className="mt-3 text-secondary">Enter your pincode and find out in a second.</p>
-
+      <Blob from="lg" className="-right-40 top-1/2 h-80 w-80 -translate-y-1/2" />
+      <Reveal className="text-center">
       <form onSubmit={handleCheck} className="mx-auto mt-8 flex max-w-sm flex-col gap-3 sm:flex-row">
         <input
           type="text"
@@ -121,7 +124,8 @@ function DeliveryCheck() {
           </motion.div>
         )}
       </AnimatePresence>
-    </section>
+      </Reveal>
+    </Section>
   )
 }
 

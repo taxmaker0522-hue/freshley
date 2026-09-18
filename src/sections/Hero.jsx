@@ -1,5 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
+import BasketIllustration from '../components/BasketIllustration'
+import Blob from '../components/Blob'
 import Button from '../components/Button'
 
 const VeggieScene = lazy(() => import('../three/VeggieScene'))
@@ -28,10 +30,8 @@ function useCanShow3D() {
 
 function SceneFallback() {
   return (
-    <div className="flex h-full w-full items-center justify-center rounded-2xl bg-gradient-to-br from-leaf/20 via-lime/25 to-cream">
-      <span className="font-emoji text-6xl" role="img" aria-label="Basket of fresh vegetables">
-        🥕🍅🥬
-      </span>
+    <div className="flex h-full w-full items-center justify-center rounded-2xl bg-gradient-to-br from-lime/25 via-cream to-leaf/15 p-6">
+      <BasketIllustration className="h-full w-auto max-w-full drop-shadow-[0_16px_24px_rgb(43_33_24/0.18)]" />
     </div>
   )
 }
@@ -43,16 +43,19 @@ function Hero() {
   return (
     <section
       id="hero"
-      className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-16 lg:py-24"
+      className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-8 sm:px-6 sm:py-12 lg:grid-cols-2 lg:gap-16 lg:px-16 lg:py-16"
     >
-      <div className="order-1 h-[320px] w-full overflow-hidden rounded-2xl lg:order-2 lg:h-[520px]">
-        {canShow3D ? (
-          <Suspense fallback={<SceneFallback />}>
-            <VeggieScene />
-          </Suspense>
-        ) : (
-          <SceneFallback />
-        )}
+      <div className="relative order-1 lg:order-2">
+        <Blob className="-inset-8" />
+        <div className="relative h-[320px] w-full overflow-hidden rounded-2xl lg:h-[520px]">
+          {canShow3D ? (
+            <Suspense fallback={<SceneFallback />}>
+              <VeggieScene />
+            </Suspense>
+          ) : (
+            <SceneFallback />
+          )}
+        </div>
       </div>
 
       <motion.div
@@ -65,7 +68,7 @@ function Hero() {
           variants={itemVariants}
           className="text-3xl font-semibold leading-[1.1] text-soil sm:text-5xl lg:text-display"
         >
-          Farm-fresh vegetables at your door, every morning
+          Farm-fresh vegetables at your door, <em className="italic text-leaf">every morning</em>
         </motion.h1>
 
         <motion.p

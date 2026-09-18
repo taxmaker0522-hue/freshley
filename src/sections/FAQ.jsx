@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import Blob from '../components/Blob'
+import { Reveal } from '../components/Reveal'
+import Section from '../components/Section'
 import { faqs } from '../data/faqs'
 
 function PlusIcon(props) {
@@ -26,9 +29,7 @@ function FAQItem({ faq, isOpen, onToggle }) {
           onClick={onToggle}
           className="flex min-h-11 w-full items-center justify-between gap-4 py-5 text-left"
         >
-          <span className="font-heading text-base font-semibold text-soil sm:text-lg">
-            {faq.question}
-          </span>
+          <span className="font-heading text-lg font-semibold text-soil">{faq.question}</span>
           <motion.span
             animate={{ rotate: isOpen ? 45 : 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.2 }}
@@ -62,14 +63,9 @@ function FAQ() {
   const [openId, setOpenId] = useState(faqs[0].id)
 
   return (
-    <section id="faq" className="scroll-mt-24 mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:py-24">
-      <div className="text-center">
-        <h2 className="font-heading text-3xl font-semibold text-soil sm:text-4xl">
-          Frequently asked questions
-        </h2>
-      </div>
-
-      <div className="mt-10">
+    <Section id="faq" width="narrow" eyebrow="FAQ" title="Questions, answered">
+      <Blob from="lg" className="-left-40 top-1/3 h-80 w-80" />
+      <Reveal className="mt-10">
         {faqs.map((faq) => (
           <FAQItem
             key={faq.id}
@@ -78,8 +74,8 @@ function FAQ() {
             onToggle={() => setOpenId((current) => (current === faq.id ? null : faq.id))}
           />
         ))}
-      </div>
-    </section>
+      </Reveal>
+    </Section>
   )
 }
 
