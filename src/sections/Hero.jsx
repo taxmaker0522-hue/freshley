@@ -1,10 +1,7 @@
-import { lazy, Suspense } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
-import BasketIllustration from '../components/BasketIllustration'
 import Blob from '../components/Blob'
 import Button from '../components/Button'
-
-const VeggieScene = lazy(() => import('../three/VeggieScene'))
+import ProduceScene from '../components/ProduceScene'
 
 const trustChips = ['100% organic', 'Delivered by 8 am', 'Pause anytime']
 
@@ -18,26 +15,7 @@ const itemVariants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
 }
 
-function useCanShow3D() {
-  const reduceMotion = useReducedMotion()
-  const lowPower =
-    typeof navigator !== 'undefined' &&
-    navigator.hardwareConcurrency !== undefined &&
-    navigator.hardwareConcurrency <= 4
-
-  return !reduceMotion && !lowPower
-}
-
-function SceneFallback() {
-  return (
-    <div className="flex h-full w-full items-center justify-center rounded-2xl bg-gradient-to-br from-lime/25 via-cream to-leaf/15 p-6">
-      <BasketIllustration className="h-full w-auto max-w-full drop-shadow-[0_16px_24px_rgb(43_33_24/0.18)]" />
-    </div>
-  )
-}
-
 function Hero() {
-  const canShow3D = useCanShow3D()
   const reduceMotion = useReducedMotion()
 
   return (
@@ -46,16 +24,8 @@ function Hero() {
       className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-8 sm:px-6 sm:py-12 lg:grid-cols-2 lg:gap-16 lg:px-16 lg:py-16"
     >
       <div className="relative order-1 lg:order-2">
-        <Blob className="-inset-8" />
-        <div className="relative h-[320px] w-full overflow-hidden rounded-2xl lg:h-[520px]">
-          {canShow3D ? (
-            <Suspense fallback={<SceneFallback />}>
-              <VeggieScene />
-            </Suspense>
-          ) : (
-            <SceneFallback />
-          )}
-        </div>
+        <Blob className="inset-4" />
+        <ProduceScene />
       </div>
 
       <motion.div

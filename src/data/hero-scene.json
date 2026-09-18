@@ -1,0 +1,14 @@
+{
+  "aspect": [4, 3],
+  "basket": { "x": 21, "y": 44, "w": 58 },
+  "items": [
+    { "id": "banana", "x": 6, "y": 8, "w": 30, "rotate": -28, "depth": 0.35, "delay": 0.05, "behind": true },
+    { "id": "carrot", "x": 52, "y": 6, "w": 40, "rotate": 22, "depth": 0.45, "delay": 0.1, "behind": true },
+    { "id": "coriander", "x": 30, "y": 10, "w": 34, "rotate": -6, "depth": 0.5, "delay": 0.15, "behind": true },
+    { "id": "spinach", "x": 61, "y": 33, "w": 28, "rotate": 12, "depth": 0.7, "delay": 0.25, "behind": true },
+    { "id": "mango", "x": 41, "y": 45, "w": 20, "rotate": -4, "depth": 0.9, "delay": 0.4, "behind": true },
+    { "id": "tomato", "x": 10, "y": 34, "w": 26, "rotate": -6, "depth": 0.8, "delay": 0.2, "behind": false },
+    { "id": "brinjal", "x": 2, "y": 58, "w": 28, "rotate": 6, "depth": 1.0, "delay": 0.3, "behind": false },
+    { "id": "capsicum", "x": 70, "y": 56, "w": 23, "rotate": -10, "depth": 1.0, "delay": 0.35, "behind": false }
+  ]
+}

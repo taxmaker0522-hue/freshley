@@ -53,5 +53,7 @@ real data lands.
 - [ ] **SVG produce illustrations** — one consistent style for all 30 items.
       Add an `icon` React component per item in `produce.js`; `ProduceGlyph`
       already prefers `icon` over `emoji`, so no component changes are needed.
-- [ ] Hero fallback — `BasketIllustration` is a stand-in; a rendered image of
-      the 3D scene (or a real photo) would be stronger.
+- [ ] Hero produce photos — the cutouts in `src/assets/produce/` are Pixabay
+      stock (see `CREDITS.md` there). Swapping in photos of *your* actual
+      produce, shot on white and cut out the same way, would make the hero
+      unmistakably yours.

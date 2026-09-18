@@ -10,7 +10,7 @@ Subscription-based daily home delivery of fresh organic vegetables, leafy greens
 - React + Vite — JSX, not TypeScript
 - Tailwind CSS v4 via `@tailwindcss/vite`
 - Motion — `import { motion } from "motion/react"` (not `framer-motion`)
-- React Three Fiber + drei for 3D
+- Hero "3D" is a 2.5D scene of real photo cutouts (`src/assets/produce/*.webp`, layout in `src/data/hero-scene.json`) driven by Motion — no three.js
 
 Any component pasted from 21st.dev must be converted to JSX and restyled to our tokens below — never used as-is.
 
@@ -34,7 +34,8 @@ Any component pasted from 21st.dev must be converted to JSX and restyled to our 
 - Mobile-first: design at 375px first, then 768px, then 1280px
 - Prices in ₹
 - All animation respects `prefers-reduced-motion`
-- 3D canvas is lazy-loaded and replaced by a static image on low-end devices
+- The hero produce scene renders as a static composition under `prefers-reduced-motion`; no device-capability gating
+- Produce cutouts come from Pixabay (Pixabay Content License) — sources in `src/assets/produce/CREDITS.md`
 - One section per component, in `src/sections/`
 - Shared data (vegetables, plans, FAQs) lives in `src/data/*.js`
 - No lorem ipsum — write real copy

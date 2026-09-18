@@ -4,6 +4,13 @@ Placeholder gradient blocks currently stand in for real photography. Swap
 these out before launch. (All other placeholder content is tracked in
 [TODO-content.md](TODO-content.md).)
 
+## Hero produce cutouts — `src/assets/produce/*.webp`
+
+Done with Pixabay stock (free for commercial use, sources in
+`src/assets/produce/CREDITS.md`). Optional upgrade: replace with cutouts of
+your own produce — shoot on plain white, then run them through the same
+`rembg` step. Keep the same file names and the scene picks them up.
+
 ## Farm cards — `src/sections/FarmStory.jsx`, data in `src/data/farms.js`
 
 - [ ] Ramulu Naidu — Chittoor — farmer/farm photo
