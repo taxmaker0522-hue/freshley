@@ -1,0 +1,55 @@
+import { motion, useReducedMotion } from 'motion/react'
+import { getStoredComboSummary } from '../hooks/useComboBuilder'
+import { useComboSheetOpen } from '../hooks/useComboSheet'
+
+// Placeholder business WhatsApp number — replace with the real one before launch.
+const WHATSAPP_NUMBER = '919000000000'
+
+function WhatsAppIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.38 1.26 4.8L2 22l5.42-1.36a9.9 9.9 0 0 0 4.62 1.13h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.85 9.85 0 0 0 12.04 2Zm0 1.8c2.15 0 4.17.83 5.68 2.35a7.98 7.98 0 0 1 2.36 5.76c0 4.47-3.64 8.11-8.05 8.11a8 8 0 0 1-4.09-1.12l-.29-.17-3.03.76.8-2.95-.19-.3a7.99 7.99 0 0 1-1.24-4.31c0-4.47 3.65-8.13 8.05-8.13Z" />
+    </svg>
+  )
+}
+
+function buildMessage() {
+  const combo = getStoredComboSummary()
+
+  if (!combo || combo.items.length === 0) {
+    return "Hi Freshley! I'd like to know more about your daily vegetable box."
+  }
+
+  const itemList = combo.items.map((item) => `${item.emoji} ${item.name}`).join(', ')
+  return `Hi Freshley! I've built a box: ${itemList}. That's about ₹${combo.pricePerDay}/day. Can you help me subscribe?`
+}
+
+function WhatsAppButton() {
+  const reduceMotion = useReducedMotion()
+  const [comboSheetOpen] = useComboSheetOpen()
+
+  function handleClick() {
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage())}`
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
+  return (
+    <motion.button
+      type="button"
+      onClick={handleClick}
+      aria-label="Chat with us on WhatsApp"
+      initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 20, delay: reduceMotion ? 0 : 0.6 }}
+      whileHover={reduceMotion ? undefined : { scale: 1.08 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.94 }}
+      className={`fixed bottom-20 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-lift transition-opacity duration-200 lg:bottom-6 ${
+        comboSheetOpen ? 'pointer-events-none opacity-0 lg:pointer-events-auto lg:opacity-100' : 'opacity-100'
+      }`}
+    >
+      <WhatsAppIcon className="h-7 w-7" />
+    </motion.button>
+  )
+}
+
+export default WhatsAppButton
