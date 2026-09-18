@@ -1,3 +1,5 @@
+// sample: true marks invented placeholder farms. Replace with real partner
+// farms (and photos — see TODO-images.md) before launch.
 export const farms = [
   {
     id: 'ramulu',
@@ -6,6 +8,7 @@ export const farms = [
     distanceKm: 42,
     grows: ['Tomato', 'Brinjal', 'Okra'],
     organicSince: 2014,
+    sample: true,
   },
   {
     id: 'lakshmi',
@@ -14,6 +17,7 @@ export const farms = [
     distanceKm: 58,
     grows: ['Spinach', 'Methi', 'Coriander'],
     organicSince: 2017,
+    sample: true,
   },
   {
     id: 'venkatesh',
@@ -22,6 +26,7 @@ export const farms = [
     distanceKm: 63,
     grows: ['Mango', 'Papaya', 'Banana'],
     organicSince: 2011,
+    sample: true,
   },
 ]
 

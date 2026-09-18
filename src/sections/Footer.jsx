@@ -1,3 +1,4 @@
+import SampleTag from '../components/SampleTag'
 import { site } from '../data/site'
 
 function LeafMark(props) {
@@ -51,9 +52,9 @@ function WhatsAppIcon(props) {
 const whatsappHref = `https://wa.me/${site.whatsappNumber}`
 
 const socialLinks = [
-  { label: 'Instagram', href: 'https://instagram.com/freshley.in', icon: InstagramIcon },
-  { label: 'Facebook', href: 'https://facebook.com/freshley.in', icon: FacebookIcon },
-  { label: 'X (Twitter)', href: 'https://x.com/freshley_in', icon: XIcon },
+  { label: 'Instagram', href: site.social.instagram, icon: InstagramIcon },
+  { label: 'Facebook', href: site.social.facebook, icon: FacebookIcon },
+  { label: 'X (Twitter)', href: site.social.x, icon: XIcon },
   { label: 'WhatsApp', href: whatsappHref, icon: WhatsAppIcon },
 ]
 
@@ -65,6 +66,14 @@ const quickLinks = [
   { label: 'FAQ', href: '#faq' },
 ]
 
+const legalLinks = [
+  { label: 'Privacy policy', href: site.legal.privacy },
+  { label: 'Terms of service', href: site.legal.terms },
+  { label: 'Refund policy', href: site.legal.refund },
+]
+
+const linkClass = 'text-cream/70 transition-colors hover:text-lime'
+
 function Footer() {
   const year = new Date().getFullYear()
 
@@ -75,7 +84,7 @@ function Footer() {
           <div>
             <div className="flex items-center gap-2">
               <LeafMark className="h-6 w-6 text-lime" />
-              <span className="font-heading text-lg font-semibold text-cream">Freshley</span>
+              <span className="font-heading text-lg font-semibold text-cream">{site.name}</span>
             </div>
             <p className="mt-3 max-w-xs text-sm text-cream/70">
               Organic vegetables, greens and fruit, delivered fresh from farms we know by name —
@@ -102,7 +111,7 @@ function Footer() {
             <ul className="mt-4 flex flex-col gap-2.5 text-sm">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <a href={link.href} className="text-cream/70 transition-colors hover:text-lime">
+                  <a href={link.href} className={linkClass}>
                     {link.label}
                   </a>
                 </li>
@@ -112,24 +121,19 @@ function Footer() {
 
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wide text-cream">Contact</h3>
-            <ul className="mt-4 flex flex-col gap-2.5 text-sm text-cream/70">
+            <ul className="mt-4 flex flex-col gap-2.5 text-sm">
               <li>
-                <a href="tel:+919000000000" className="transition-colors hover:text-lime">
-                  +91 90000 00000
+                <a href={`tel:${site.phone.tel}`} className={linkClass}>
+                  {site.phone.display}
                 </a>
               </li>
               <li>
-                <a href="mailto:hello@freshley.in" className="transition-colors hover:text-lime">
-                  hello@freshley.in
+                <a href={`mailto:${site.email}`} className={linkClass}>
+                  {site.email}
                 </a>
               </li>
               <li>
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="transition-colors hover:text-lime"
-                >
+                <a href={whatsappHref} target="_blank" rel="noreferrer noopener" className={linkClass}>
                   WhatsApp us
                 </a>
               </li>
@@ -138,29 +142,26 @@ function Footer() {
 
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wide text-cream">Legal</h3>
-            <ul className="mt-4 flex flex-col gap-2.5 text-sm text-cream/70">
-              <li>
-                <a href="#" className="transition-colors hover:text-lime">
-                  Privacy policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="transition-colors hover:text-lime">
-                  Terms of service
-                </a>
-              </li>
-              <li>
-                <a href="#" className="transition-colors hover:text-lime">
-                  Refund policy
-                </a>
-              </li>
+            <ul className="mt-4 flex flex-col gap-2.5 text-sm">
+              {legalLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className={linkClass}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-cream/10 pt-6 text-xs text-cream/70 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} Freshley. All rights reserved.</p>
-          <p>FSSAI Lic. No. 12345678901234 (placeholder — replace with your real licence number)</p>
+          <p>
+            © {year} {site.name}. All rights reserved.
+          </p>
+          <p className="flex items-center gap-2">
+            FSSAI Lic. No. {site.fssaiLicence}
+            <SampleTag />
+          </p>
         </div>
       </div>
     </footer>

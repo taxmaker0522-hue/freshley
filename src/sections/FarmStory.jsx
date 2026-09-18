@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { Reveal, RevealGroup, RevealItem } from '../components/Reveal'
+import SampleTag from '../components/SampleTag'
 import Section from '../components/Section'
 import { farms, todaysHarvest } from '../data/farms'
 
@@ -33,7 +34,10 @@ function FarmCard({ farm, gradientClass }) {
 
       <div className="flex flex-col gap-3 p-6">
         <div>
-          <h3 className="font-heading text-lg font-semibold text-soil">{farm.farmerName}</h3>
+          <h3 className="flex items-center gap-2 font-heading text-lg font-semibold text-soil">
+            {farm.farmerName}
+            {farm.sample && <SampleTag />}
+          </h3>
           <p className="text-sm text-secondary">
             {farm.village} · {farm.distanceKm} km from the city
           </p>

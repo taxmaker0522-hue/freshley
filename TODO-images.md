@@ -1,7 +1,8 @@
 # TODO: Images to replace
 
 Placeholder gradient blocks currently stand in for real photography. Swap
-these out before launch.
+these out before launch. (All other placeholder content is tracked in
+[TODO-content.md](TODO-content.md).)
 
 ## Farm cards — `src/sections/FarmStory.jsx`, data in `src/data/farms.js`
 

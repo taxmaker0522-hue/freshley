@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { useReducedMotion } from 'motion/react'
 import { RevealGroup, RevealItem } from '../components/Reveal'
+import SampleTag from '../components/SampleTag'
 import Section from '../components/Section'
 import { testimonials } from '../data/testimonials'
 
@@ -19,7 +20,10 @@ function TestimonialCard({ testimonial }) {
         {testimonial.quote}
       </blockquote>
       <figcaption>
-        <p className="text-sm font-semibold text-soil">{testimonial.name}</p>
+        <p className="flex items-center gap-2 text-sm font-semibold text-soil">
+          {testimonial.name}
+          {testimonial.sample && <SampleTag />}
+        </p>
         <p className="text-xs text-secondary">{testimonial.location}</p>
       </figcaption>
     </figure>
