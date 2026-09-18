@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
 import { allProduce } from '../data/produce'
 
 const STORAGE_KEY = 'freshley:combo-builder'
@@ -41,27 +41,65 @@ function loadState() {
   }
 }
 
-export function getStoredComboSummary() {
-  const state = loadState()
-  const items = [...state.vegetables, ...state.leafyGreens, ...state.fruits]
-    .map((id) => produceById.get(id))
-    .filter(Boolean)
-  const pricePerDay = items.reduce((sum, item) => sum + item.pricePerDay, 0)
+function persist(next) {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+  } catch {
+    // storage unavailable (private mode / quota) — combo still works in-memory
+  }
+}
 
-  return { items, pricePerDay, frequency: state.frequency, deliverySlot: state.deliverySlot }
+// One shared store so the builder, mini-cart bar and WhatsApp button stay in sync.
+let state = loadState()
+const listeners = new Set()
+
+function setState(next) {
+  state = next
+  persist(state)
+  listeners.forEach((listener) => listener())
+}
+
+function subscribe(listener) {
+  listeners.add(listener)
+  return () => listeners.delete(listener)
+}
+
+function getSnapshot() {
+  return state
+}
+
+// Returns true when the pick was refused because the category is full.
+function toggleItem(category, id) {
+  const selected = state[category]
+  if (selected.includes(id)) {
+    setState({ ...state, [category]: selected.filter((itemId) => itemId !== id) })
+    return false
+  }
+  if (selected.length >= LIMITS[category].max) return true
+  setState({ ...state, [category]: [...selected, id] })
+  return false
+}
+
+function applyPreset(preset) {
+  setState({
+    ...state,
+    vegetables: preset.vegetables,
+    leafyGreens: preset.leafyGreens,
+    fruits: preset.fruits,
+  })
+}
+
+function setFrequency(id) {
+  setState({ ...state, frequency: id })
+}
+
+function setDeliverySlot(id) {
+  setState({ ...state, deliverySlot: id })
 }
 
 export function useComboBuilder() {
-  const [state, setState] = useState(loadState)
+  const snapshot = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
   const [blockedId, setBlockedId] = useState(null)
-
-  useEffect(() => {
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-    } catch {
-      // storage unavailable (private mode / quota) — combo still works in-memory
-    }
-  }, [state])
 
   useEffect(() => {
     if (!blockedId) return undefined
@@ -69,45 +107,12 @@ export function useComboBuilder() {
     return () => clearTimeout(timeout)
   }, [blockedId])
 
-  function toggleItem(category, id) {
-    setState((prev) => {
-      const selected = prev[category]
-      const isSelected = selected.includes(id)
-
-      if (isSelected) {
-        return { ...prev, [category]: selected.filter((itemId) => itemId !== id) }
-      }
-      if (selected.length >= LIMITS[category].max) {
-        setBlockedId(id)
-        return prev
-      }
-      return { ...prev, [category]: [...selected, id] }
-    })
-  }
-
-  function applyPreset(preset) {
-    setState((prev) => ({
-      ...prev,
-      vegetables: preset.vegetables,
-      leafyGreens: preset.leafyGreens,
-      fruits: preset.fruits,
-    }))
-  }
-
-  function setFrequency(id) {
-    setState((prev) => ({ ...prev, frequency: id }))
-  }
-
-  function setDeliverySlot(id) {
-    setState((prev) => ({ ...prev, deliverySlot: id }))
-  }
-
   const selectedItems = useMemo(
     () =>
-      [...state.vegetables, ...state.leafyGreens, ...state.fruits]
+      [...snapshot.vegetables, ...snapshot.leafyGreens, ...snapshot.fruits]
         .map((id) => produceById.get(id))
         .filter(Boolean),
-    [state.vegetables, state.leafyGreens, state.fruits],
+    [snapshot],
   )
 
   const pricePerDay = useMemo(
@@ -115,16 +120,19 @@ export function useComboBuilder() {
     [selectedItems],
   )
 
-  const frequency = FREQUENCIES.find((f) => f.id === state.frequency) ?? FREQUENCIES[0]
+  const frequency = FREQUENCIES.find((f) => f.id === snapshot.frequency) ?? FREQUENCIES[0]
+  const deliverySlot = DELIVERY_SLOTS.find((s) => s.id === snapshot.deliverySlot) ?? DELIVERY_SLOTS[0]
   const monthlyTotal = pricePerDay * frequency.daysPerMonth
 
   const isComplete =
-    state.vegetables.length === LIMITS.vegetables.max &&
-    state.leafyGreens.length === LIMITS.leafyGreens.max
+    snapshot.vegetables.length === LIMITS.vegetables.max &&
+    snapshot.leafyGreens.length === LIMITS.leafyGreens.max
 
   return {
-    state,
-    toggleItem,
+    state: snapshot,
+    toggleItem: (category, id) => {
+      if (toggleItem(category, id)) setBlockedId(id)
+    },
     applyPreset,
     setFrequency,
     setDeliverySlot,
@@ -133,6 +141,7 @@ export function useComboBuilder() {
     pricePerDay,
     monthlyTotal,
     frequency,
+    deliverySlot,
     isComplete,
   }
 }

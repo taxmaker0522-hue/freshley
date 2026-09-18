@@ -1,3 +1,4 @@
+import MiniCartBar from './components/MiniCartBar'
 import WhatsAppButton from './components/WhatsAppButton'
 import Navbar from './sections/Navbar'
 import Hero from './sections/Hero'
@@ -27,6 +28,7 @@ function App() {
         <FAQ />
       </main>
       <Footer />
+      <MiniCartBar />
       <WhatsAppButton />
     </>
   )

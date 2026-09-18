@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react'
-import { getStoredComboSummary } from '../hooks/useComboBuilder'
-import { useComboSheetOpen } from '../hooks/useComboSheet'
+import { useComboBuilder } from '../hooks/useComboBuilder'
+import { useMiniCartVisible } from '../hooks/useMiniCart'
 
 // Placeholder business WhatsApp number — replace with the real one before launch.
 const WHATSAPP_NUMBER = '919000000000'
@@ -13,42 +13,38 @@ function WhatsAppIcon(props) {
   )
 }
 
-function buildMessage() {
-  const combo = getStoredComboSummary()
-
-  if (!combo || combo.items.length === 0) {
+function buildMessage(selectedItems, pricePerDay) {
+  if (selectedItems.length === 0) {
     return "Hi Freshley! I'd like to know more about your daily vegetable box."
   }
-
-  const itemList = combo.items.map((item) => `${item.emoji} ${item.name}`).join(', ')
-  return `Hi Freshley! I've built a box: ${itemList}. That's about ₹${combo.pricePerDay}/day. Can you help me subscribe?`
+  const itemList = selectedItems.map((item) => `${item.emoji} ${item.name}`).join(', ')
+  return `Hi Freshley! I've built a box: ${itemList}. That's about ₹${pricePerDay}/day. Can you help me subscribe?`
 }
 
 function WhatsAppButton() {
   const reduceMotion = useReducedMotion()
-  const [comboSheetOpen] = useComboSheetOpen()
+  const { selectedItems, pricePerDay } = useComboBuilder()
+  const miniCartVisible = useMiniCartVisible()
 
-  function handleClick() {
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage())}`
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }
+  const message = buildMessage(selectedItems, pricePerDay)
+  const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
 
   return (
-    <motion.button
-      type="button"
-      onClick={handleClick}
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noreferrer noopener"
       aria-label="Chat with us on WhatsApp"
       initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 260, damping: 20, delay: reduceMotion ? 0 : 0.6 }}
       whileHover={reduceMotion ? undefined : { scale: 1.08 }}
       whileTap={reduceMotion ? undefined : { scale: 0.94 }}
-      className={`fixed bottom-20 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-lift transition-opacity duration-200 lg:bottom-6 ${
-        comboSheetOpen ? 'pointer-events-none opacity-0 lg:pointer-events-auto lg:opacity-100' : 'opacity-100'
-      }`}
+      style={{ '--wa-bottom': miniCartVisible ? '5.75rem' : '1rem' }}
+      className="fixed right-4 bottom-[calc(var(--wa-bottom)+env(safe-area-inset-bottom))] z-50 flex h-14 w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-lift transition-[bottom] duration-300 lg:right-6 lg:bottom-6"
     >
       <WhatsAppIcon className="h-7 w-7" />
-    </motion.button>
+    </motion.a>
   )
 }
 

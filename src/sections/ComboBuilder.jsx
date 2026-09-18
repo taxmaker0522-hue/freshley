@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import Button from '../components/Button'
 import ProduceCard from '../components/ProduceCard'
 import ProduceGlyph from '../components/ProduceGlyph'
@@ -8,7 +8,6 @@ import Section from '../components/Section'
 import { vegetables, leafyGreens, fruits } from '../data/produce'
 import { presets } from '../data/presets'
 import { DELIVERY_SLOTS, FREQUENCIES, LIMITS, useComboBuilder } from '../hooks/useComboBuilder'
-import { useComboSheetOpen } from '../hooks/useComboSheet'
 
 const TABS = [
   { id: 'vegetables', label: 'Vegetables', shortLabel: 'Veg', data: vegetables },
@@ -116,7 +115,6 @@ function SummaryContent({ combo }) {
 function ComboBuilder() {
   const combo = useComboBuilder()
   const [activeTab, setActiveTab] = useState('vegetables')
-  const [sheetOpen, setSheetOpen] = useComboSheetOpen()
   const reduceMotion = useReducedMotion()
 
   const currentTab = TABS.find((tab) => tab.id === activeTab)
@@ -131,7 +129,6 @@ function ComboBuilder() {
       eyebrow="Build your box"
       title="Build your daily box"
       intro="Pick 3 vegetables, 2 leafy greens or herbs, and up to 2 fruits — or start from a preset."
-      className="pb-20 lg:pb-0"
     >
       <Reveal className="mt-6 flex flex-wrap gap-2">
         {presets.map((preset) => (
@@ -201,36 +198,13 @@ function ComboBuilder() {
             <SummaryContent combo={combo} />
           </div>
         </aside>
-      </div>
 
-      <div className="lg:hidden">
-        <div className="fixed inset-x-0 bottom-0 z-40 rounded-t-2xl border-t border-leaf/15 bg-cream shadow-[0_-8px_30px_rgb(43_33_24/0.16)]">
-          <button
-            type="button"
-            onClick={() => setSheetOpen((value) => !value)}
-            className="flex min-h-11 w-full items-center justify-between px-5 py-4"
-          >
-            <span className="text-sm font-semibold text-soil">
-              {combo.selectedItems.length} items · ₹{combo.pricePerDay}/day
-            </span>
-            <span className="text-sm font-semibold text-leaf">{sheetOpen ? 'Close' : 'View box'}</span>
-          </button>
-
-          <AnimatePresence initial={false}>
-            {sheetOpen && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: reduceMotion ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }}
-                className="overflow-hidden"
-              >
-                <div className="max-h-[65vh] overflow-y-auto px-5 pb-6">
-                  <SummaryContent combo={combo} />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div
+          id="combo-summary"
+          data-combo-summary
+          className="scroll-mt-24 rounded-2xl border border-leaf/15 bg-surface p-6 shadow-lift lg:hidden"
+        >
+          <SummaryContent combo={combo} />
         </div>
       </div>
     </Section>
