@@ -16,9 +16,14 @@ Full project brief, brand tokens and working rules live in [CLAUDE.md](CLAUDE.md
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # production build to dist/
+npm run build    # production build to dist/ (deploy this folder to Vercel/Netlify)
+npm run build:html  # one self-contained dist-html/index.html (JS, CSS, images inlined)
 npm run lint      # oxlint
 ```
+
+`dist-html/index.html` opens straight from disk with a double-click and can be
+emailed or shared as a single file. It still loads Google Fonts, so fonts fall
+back to system serif/sans when offline.
 
 ## Project structure
 
