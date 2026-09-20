@@ -65,8 +65,12 @@ Tick each item off as real data lands.
 ## Later prompts
 
 - [ ] **SVG produce illustrations** — one consistent style for all 30 items.
-      Add an `icon` React component per item in `produce.js`; `ProduceGlyph`
-      already prefers `icon` over `emoji`, so no component changes are needed.
+      This is the durable fix for emoji: they look different on every device,
+      several are approximations (okra 🌿, beetroot 🍠, all gourds 🥒), and
+      newer ones don't exist on older phones. Add an `icon` React component per
+      item in `produce.js`; `ProduceGlyph` already prefers `icon` over `emoji`,
+      so no component changes are needed. (Interim: capsicum 🫑 and cluster
+      beans 🫘 fall back to 🌶️ / 🌱 only on devices that can't draw them.)
 - [ ] Hero produce photos — the cutouts in `src/assets/produce/` are Pixabay
       stock (see `CREDITS.md` there). Swapping in photos of *your* actual
       produce, shot on white and cut out the same way, would make the hero

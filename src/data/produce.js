@@ -3,6 +3,8 @@
 // seasonal: true if availability/price varies by season
 // icon (optional): a React SVG component; when present it replaces `emoji`
 //   everywhere via <ProduceGlyph /> — see TODO-content.md "SVG produce illustrations"
+// emojiFallback (optional): shown instead of `emoji` on devices that cannot draw
+//   it (newer emoji render as an empty box on Windows 10 / older Androids)
 
 export const vegetables = [
   {
@@ -118,6 +120,7 @@ export const vegetables = [
     name: 'Capsicum',
     regionalName: { te: 'క్యాప్సికం', hi: 'शिमला मिर्च' },
     emoji: '🫑',
+    emojiFallback: '🌶️',
     unit: '500 g',
     pricePerDay: 26,
     seasonal: false,
@@ -127,6 +130,7 @@ export const vegetables = [
     name: 'Cluster Beans',
     regionalName: { te: 'గోరు చిక్కుడు', hi: 'ग्वार फली' },
     emoji: '🫘',
+    emojiFallback: '🌱',
     unit: '500 g',
     pricePerDay: 22,
     seasonal: true,

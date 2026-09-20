@@ -56,7 +56,7 @@ const sampleHarvest = import.meta.env.DEV
         '🍆 Brinjal',
         '🍌 Banana',
         '🌿 Coriander',
-        '🫑 Capsicum',
+        '🍇 Grapes',
         '🥭 Mango',
         '🌿 Mint',
       ],
