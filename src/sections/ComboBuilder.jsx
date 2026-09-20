@@ -77,7 +77,7 @@ function SummaryContent({ combo }) {
                     type="button"
                     onClick={() => toggleItem(categoryOf(item.id), item.id)}
                     aria-label={`Remove ${item.name}`}
-                    className="flex h-7 w-7 items-center justify-center rounded-full text-muted transition-colors hover:bg-error/10 hover:text-error"
+                    className="-my-2 -mr-2 flex h-11 w-11 items-center justify-center rounded-full text-muted transition-colors hover:bg-error/10 hover:text-error"
                   >
                     ×
                   </button>

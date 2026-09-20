@@ -72,17 +72,21 @@ function Testimonials() {
             </div>
           ))}
         </div>
-        <div className="mt-4 flex justify-center gap-1.5">
+        <div className="mt-2 flex justify-center">
           {testimonials.map((testimonial, index) => (
             <button
               key={testimonial.id}
               type="button"
               aria-label={`Go to review ${index + 1}`}
               onClick={() => scrollToIndex(index)}
-              className={`h-2 rounded-full transition-all ${
-                index === activeIndex ? 'w-6 bg-leaf' : 'w-2 bg-leaf/25'
-              }`}
-            />
+              className="flex h-11 w-11 items-center justify-center"
+            >
+              <span
+                className={`h-2 rounded-full transition-all ${
+                  index === activeIndex ? 'w-6 bg-leaf' : 'w-2 bg-leaf/25'
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>
