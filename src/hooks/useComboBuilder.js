@@ -138,6 +138,15 @@ export function useComboBuilder() {
     snapshot.vegetables.length === LIMITS.vegetables.max &&
     snapshot.leafyGreens.length === LIMITS.leafyGreens.max
 
+  // True once the visitor has changed the box from the pre-selected default
+  // (curry leaves only), so the mini-cart never appears on a first visit.
+  const isDefaultBox =
+    snapshot.vegetables.length === 0 &&
+    snapshot.fruits.length === 0 &&
+    snapshot.leafyGreens.length === DEFAULT_STATE.leafyGreens.length &&
+    snapshot.leafyGreens.every((id, i) => id === DEFAULT_STATE.leafyGreens[i])
+  const hasPicks = selectedItems.length > 0 && !isDefaultBox
+
   return {
     state: snapshot,
     toggleItem: (category, id) => {
@@ -155,5 +164,6 @@ export function useComboBuilder() {
     frequency,
     deliverySlot,
     isComplete,
+    hasPicks,
   }
 }

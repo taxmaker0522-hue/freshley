@@ -24,12 +24,12 @@ function useOnScreen(selector) {
 }
 
 function MiniCartBar() {
-  const { selectedItems, pricePerDay } = useComboBuilder()
+  const { selectedItems, pricePerDay, hasPicks } = useComboBuilder()
   const summaryOnScreen = useOnScreen('[data-combo-summary]')
   const footerOnScreen = useOnScreen('footer')
   const reduceMotion = useReducedMotion()
 
-  const visible = selectedItems.length > 0 && !summaryOnScreen && !footerOnScreen
+  const visible = hasPicks && !summaryOnScreen && !footerOnScreen
 
   useEffect(() => {
     setMiniCartVisible(visible)
@@ -44,7 +44,7 @@ function MiniCartBar() {
           animate={{ y: 0, opacity: 1 }}
           exit={reduceMotion ? { opacity: 0 } : { y: 80, opacity: 0 }}
           transition={{ duration: reduceMotion ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-x-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 lg:hidden"
+          className="fixed inset-x-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 mx-auto max-w-md lg:hidden"
         >
           <div className="flex items-center justify-between gap-3 rounded-full border border-leaf/15 bg-surface py-2 pl-5 pr-2 shadow-lift">
             <p className="flex items-center gap-2 text-sm">
