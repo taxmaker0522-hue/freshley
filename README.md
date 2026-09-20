@@ -21,6 +21,13 @@ npm run build:html  # one self-contained dist-html/index.html (JS, CSS, images i
 npm run lint      # oxlint
 ```
 
+**Social preview (WhatsApp / Facebook / X):** these crawlers need an absolute
+image URL, so the build injects your domain into the `og:*` / `twitter:*` tags.
+On Vercel it is picked up automatically (`VERCEL_PROJECT_PRODUCTION_URL`); for
+any other host set `SITE_URL=https://your-domain` before `npm run build`. The
+preview image is `public/og-image.jpg`; icons are `public/favicon.svg`,
+`favicon-32.png` and `apple-touch-icon.png`.
+
 `dist-html/index.html` opens straight from disk with a double-click and can be
 emailed or shared as a single file. It still loads Google Fonts, so fonts fall
 back to system serif/sans when offline.
