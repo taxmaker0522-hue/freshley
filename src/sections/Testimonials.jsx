@@ -3,7 +3,7 @@ import { useReducedMotion } from 'motion/react'
 import { RevealGroup, RevealItem } from '../components/Reveal'
 import SampleTag from '../components/SampleTag'
 import Section from '../components/Section'
-import { testimonials } from '../data/testimonials'
+import { liveTestimonials as testimonials } from '../data/testimonials'
 
 const SLIDE_GAP = 16
 
@@ -49,6 +49,8 @@ function Testimonials() {
       behavior: reduceMotion ? 'auto' : 'smooth',
     })
   }
+
+  if (testimonials.length === 0) return null
 
   return (
     <Section

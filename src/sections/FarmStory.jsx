@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'motion/react'
 import { Reveal, RevealGroup, RevealItem } from '../components/Reveal'
 import SampleTag from '../components/SampleTag'
 import Section from '../components/Section'
-import { farms, todaysHarvest } from '../data/farms'
+import { liveFarms, todaysHarvest } from '../data/farms'
 
 const gradients = [
   'from-leaf/40 via-lime/40 to-cream',
@@ -62,14 +62,17 @@ function FarmCard({ farm, gradientClass }) {
 
 function HarvestTicker() {
   const reduceMotion = useReducedMotion()
-  const looped = [...todaysHarvest, ...todaysHarvest]
+  if (!todaysHarvest) return null
+
+  const looped = [...todaysHarvest.items, ...todaysHarvest.items]
 
   return (
     <Reveal className="mt-12">
       <div className="relative overflow-hidden rounded-2xl border border-leaf/15 bg-surface py-4 shadow-soft">
-        <div className="mb-2 flex items-baseline gap-3 px-6">
+        <div className="mb-2 flex items-center gap-3 px-6">
           <p className="text-xs font-semibold uppercase tracking-wide text-leaf">Today&rsquo;s harvest</p>
-          <p className="font-heading text-sm italic text-secondary">picked at 5:40 am</p>
+          <p className="font-heading text-sm italic text-secondary">picked at {todaysHarvest.pickedAt}</p>
+          {todaysHarvest.sample && <SampleTag />}
         </div>
         <motion.div
           className="flex w-max gap-8 px-6"
@@ -88,6 +91,8 @@ function HarvestTicker() {
 }
 
 function FarmStory() {
+  if (liveFarms.length === 0) return null
+
   return (
     <Section
       id="farm-story"
@@ -98,7 +103,7 @@ function FarmStory() {
       intro="Every box traces back to a real farm we visit, not a warehouse."
     >
       <RevealGroup className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-        {farms.map((farm, index) => (
+        {liveFarms.map((farm, index) => (
           <RevealItem key={farm.id} className="h-full">
             <FarmCard farm={farm} gradientClass={gradients[index % gradients.length]} />
           </RevealItem>

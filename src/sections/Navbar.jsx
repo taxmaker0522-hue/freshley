@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Button from '../components/Button'
+import { liveFarms } from '../data/farms'
 
 const links = [
   { label: 'Build your box', href: '#combo-builder' },
   { label: 'Plans', href: '#plans' },
   { label: 'How it works', href: '#how-it-works' },
-  { label: 'Farms', href: '#farm-story' },
+  ...(liveFarms.length > 0 ? [{ label: 'Farms', href: '#farm-story' }] : []),
 ]
 
 function LeafMark({ className }) {

@@ -1,10 +1,10 @@
 import { plans } from '../data/plans'
-import { site } from '../data/site'
+import { WHATSAPP_NUMBER } from '../data/site'
 
 const currency = new Intl.NumberFormat('en-IN')
 
 export function waLink(message) {
-  return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
 }
 
 export function buildGenericMessage() {

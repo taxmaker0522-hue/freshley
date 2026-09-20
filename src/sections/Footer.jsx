@@ -1,5 +1,5 @@
-import SampleTag from '../components/SampleTag'
-import { site } from '../data/site'
+import { liveFarms } from '../data/farms'
+import { site, WHATSAPP_NUMBER } from '../data/site'
 
 function LeafMark(props) {
   return (
@@ -49,7 +49,7 @@ function WhatsAppIcon(props) {
   )
 }
 
-const whatsappHref = `https://wa.me/${site.whatsappNumber}`
+const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}`
 
 const socialLinks = [
   { label: 'Instagram', href: site.social.instagram, icon: InstagramIcon },
@@ -62,7 +62,7 @@ const quickLinks = [
   { label: 'Build your box', href: '#combo-builder' },
   { label: 'Plans', href: '#plans' },
   { label: 'How it works', href: '#how-it-works' },
-  { label: 'Farms', href: '#farm-story' },
+  ...(liveFarms.length > 0 ? [{ label: 'Farms', href: '#farm-story' }] : []),
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -158,10 +158,7 @@ function Footer() {
           <p>
             © {year} {site.name}. All rights reserved.
           </p>
-          <p className="flex items-center gap-2">
-            FSSAI Lic. No. {site.fssaiLicence}
-            <SampleTag />
-          </p>
+          {site.fssaiLicence && <p>FSSAI Lic. No. {site.fssaiLicence}</p>}
         </div>
       </div>
     </footer>
