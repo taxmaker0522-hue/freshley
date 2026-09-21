@@ -1,15 +1,15 @@
+import { delivery } from './site'
+
 export const faqs = [
   {
-    id: 'pausing',
-    question: 'Can I pause my subscription?',
-    answer:
-      'Yes — pause any day from the app or site with one tap, no calls needed. Paused days are never billed.',
+    id: 'weekly-picks',
+    question: 'How does the weekly box work?',
+    answer: `You subscribe once a month and choose what goes in your box each week — up to 8 vegetables and 5 leafy greens or herbs. Update your picks any time until ${delivery.cutoff}, and your box arrives on ${delivery.day} morning.`,
   },
   {
-    id: 'swaps',
-    question: 'Can I swap items in my box?',
-    answer:
-      'Depending on your plan you get a set number of swaps a month, or unlimited on Quarterly. Swap from the Build your box screen any time before your next delivery cutoff.',
+    id: 'cutoff',
+    question: `What happens if I miss the ${delivery.cutoff} cut-off?`,
+    answer: `Your box is packed from the picks you last saved, so your next delivery is never empty. Changes made after ${delivery.cutoff} apply from the following week.`,
   },
   {
     id: 'not-home',
@@ -18,22 +18,21 @@ export const faqs = [
       'Leave your crate slot or tell us a safe spot in delivery instructions — we leave your order there and text you a photo confirmation.',
   },
   {
-    id: 'organic-verification',
-    question: 'How is "organic" actually verified?',
+    id: 'washing-grading',
+    question: 'How are the vegetables prepared?',
     answer:
-      'Every partner farm carries a current organic certification that we re-verify annually, plus we run random residue tests through a third-party lab.',
+      'Everything is washed in fresh water, then hand-graded and sorted, so what reaches your crate is clean and only the best pieces make the cut.',
   },
   {
     id: 'payment',
     question: 'How do I pay?',
-    answer:
-      'UPI, cards and net banking are all supported. Monthly and Quarterly plans can also be set up on auto-pay.',
+    answer: 'UPI, cards and net banking are all supported, and your monthly subscription can be set up on auto-pay.',
   },
   {
     id: 'cancellation',
     question: 'Can I cancel anytime?',
     answer:
-      "Yes, with no lock-in. Cancel from your account and you'll keep deliveries until the days you've already paid for are used up.",
+      "Yes, with no lock-in. Cancel from your account and you'll keep your weekly deliveries until the month you've already paid for is used up.",
   },
   {
     id: 'delivery-areas',

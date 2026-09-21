@@ -58,7 +58,7 @@ function Testimonials() {
       band="lime"
       eyebrow="Reviews"
       title="Families who switched"
-      intro="Real households, real boxes, delivered every morning."
+      intro="Real households, real boxes, delivered every week."
     >
       <div className="mt-10 md:hidden">
         <div

@@ -1,13 +1,13 @@
 import { motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react'
 import { RevealGroup, RevealItem } from '../components/Reveal'
 import Section from '../components/Section'
+import { delivery } from '../data/site'
 
-function NoPesticideIcon(props) {
+function WaterDropIcon(props) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7c2 2.5 3 4.3 3 6a3 3 0 1 1-6 0c0-1.7 1-3.5 3-6Z" />
-      <path d="M5.5 5.5 18.5 18.5" />
+      <path d="M12 3.5c3.2 3.6 5 6.4 5 9a5 5 0 1 1-10 0c0-2.6 1.8-5.4 5-9Z" />
+      <path d="M9.8 13.5a2.4 2.4 0 0 0 2 2.2" />
     </svg>
   )
 }
@@ -49,21 +49,21 @@ function SunriseIcon(props) {
   )
 }
 
-function CalendarPauseIcon(props) {
+function CalendarCheckIcon(props) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
       <rect x="3.5" y="5" width="17" height="15" rx="2" />
       <path d="M3.5 9.5h17M8 3v3M16 3v3" />
-      <path d="M10.5 13v4M13.5 13v4" />
+      <path d="M9.5 14.5l2 2 3.5-3.7" />
     </svg>
   )
 }
 
 const features = [
   {
-    icon: NoPesticideIcon,
-    title: 'No pesticides ever',
-    description: 'Grown clean, tested regularly, sprayed with nothing.',
+    icon: WaterDropIcon,
+    title: 'Washed in fresh water',
+    description: 'Every vegetable is rinsed clean in fresh water before it is packed.',
   },
   {
     icon: ClockIcon,
@@ -72,8 +72,8 @@ const features = [
   },
   {
     icon: BadgeIcon,
-    title: 'Certified organic farms',
-    description: 'Every partner farm is audited and certified, not just labelled.',
+    title: 'Hand-graded & sorted',
+    description: 'Every piece is checked by hand, so only the best goes into your crate.',
   },
   {
     icon: CrateIcon,
@@ -82,13 +82,13 @@ const features = [
   },
   {
     icon: SunriseIcon,
-    title: 'Morning delivery, 6–8 am',
+    title: `Delivered every ${delivery.day} morning`,
     description: 'On your doorstep before the day gets going.',
   },
   {
-    icon: CalendarPauseIcon,
-    title: 'Pause or skip any day',
-    description: 'Travelling or stocked up? Skip a day in one tap.',
+    icon: CalendarCheckIcon,
+    title: 'Pick your box every week',
+    description: `Change your picks any time until ${delivery.cutoff}.`,
   },
 ]
 

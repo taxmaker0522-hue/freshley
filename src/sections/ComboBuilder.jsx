@@ -5,54 +5,24 @@ import ProduceCard from '../components/ProduceCard'
 import ProduceGlyph from '../components/ProduceGlyph'
 import { Reveal } from '../components/Reveal'
 import Section from '../components/Section'
-import { plans } from '../data/plans'
-import { vegetables, leafyGreens, fruits } from '../data/produce'
+import { monthlyPlan } from '../data/plans'
+import { vegetableCategories, vegetables, leafyGreens } from '../data/produce'
 import { presets } from '../data/presets'
+import { delivery } from '../data/site'
 import { buildBoxMessage, waLink } from '../utils/whatsapp'
-import { DELIVERY_SLOTS, FREQUENCIES, LIMITS, useComboBuilder } from '../hooks/useComboBuilder'
+import { LIMITS, useComboBuilder } from '../hooks/useComboBuilder'
 
 const TABS = [
   { id: 'vegetables', label: 'Vegetables', shortLabel: 'Veg', data: vegetables },
   { id: 'leafyGreens', label: 'Leafy greens & herbs', shortLabel: 'Greens', data: leafyGreens },
-  { id: 'fruits', label: 'Fruits', shortLabel: 'Fruit', data: fruits },
 ]
 
 const currency = new Intl.NumberFormat('en-IN')
 
-function OptionGroup({ label, options, value, onChange }) {
-  return (
-    <div>
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-secondary">{label}</p>
-      <div role="radiogroup" aria-label={label} className="flex flex-wrap gap-2">
-        {options.map((option) => (
-          <Button
-            key={option.id}
-            variant="toggle"
-            size="sm"
-            selected={value === option.id}
-            role="radio"
-            aria-checked={value === option.id}
-            onClick={() => onChange(option.id)}
-          >
-            {option.label}
-          </Button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 function SummaryContent({ combo }) {
-  const { selectedItems, pricePerDay, monthlyTotal, frequency, state, toggleItem, setFrequency, setDeliverySlot, isComplete } =
-    combo
+  const { selectedItems, state, toggleItem, isComplete } = combo
 
-  const chosenPlan = plans.find((plan) => plan.id === state.planId)
-
-  const categoryOf = (id) => {
-    if (state.vegetables.includes(id)) return 'vegetables'
-    if (state.leafyGreens.includes(id)) return 'leafyGreens'
-    return 'fruits'
-  }
+  const categoryOf = (id) => (state.vegetables.includes(id) ? 'vegetables' : 'leafyGreens')
 
   return (
     <div className="flex flex-col gap-6">
@@ -71,41 +41,28 @@ function SummaryContent({ combo }) {
                   <ProduceGlyph item={item} className="text-base" iconClassName="h-5 w-5" />
                   {item.name}
                 </span>
-                <span className="flex items-center gap-3">
-                  <span className="text-secondary">₹{item.pricePerDay}</span>
-                  <button
-                    type="button"
-                    onClick={() => toggleItem(categoryOf(item.id), item.id)}
-                    aria-label={`Remove ${item.name}`}
-                    className="-my-2 -mr-2 flex h-11 w-11 items-center justify-center rounded-full text-muted transition-colors hover:bg-error/10 hover:text-error"
-                  >
-                    ×
-                  </button>
-                </span>
+                <button
+                  type="button"
+                  onClick={() => toggleItem(categoryOf(item.id), item.id)}
+                  aria-label={`Remove ${item.name}`}
+                  className="-my-2 -mr-2 flex h-11 w-11 items-center justify-center rounded-full text-muted transition-colors hover:bg-error/10 hover:text-error"
+                >
+                  ×
+                </button>
               </li>
             ))}
           </ul>
         )}
       </div>
 
-      <OptionGroup label="Frequency" options={FREQUENCIES} value={state.frequency} onChange={setFrequency} />
-      <OptionGroup label="Delivery slot" options={DELIVERY_SLOTS} value={state.deliverySlot} onChange={setDeliverySlot} />
-
       <ul className="flex flex-col gap-2 text-sm">
         <li className="flex items-center justify-between gap-2">
-          <span className="text-secondary">Plan</span>
-          {chosenPlan ? (
-            <span className="font-medium text-soil">
-              {chosenPlan.name} ·{' '}
-              <a href="#plans" className="font-semibold text-leaf hover:underline">
-                change
-              </a>
-            </span>
-          ) : (
-            <a href="#plans" className="font-semibold text-leaf hover:underline">
-              Choose a plan
-            </a>
-          )}
+          <span className="text-secondary">Delivery</span>
+          <span className="font-medium text-soil">Every {delivery.day} morning</span>
+        </li>
+        <li className="flex items-center justify-between gap-2">
+          <span className="text-secondary">Change picks until</span>
+          <span className="font-medium text-soil">{delivery.cutoff}</span>
         </li>
         <li className="flex items-center justify-between gap-2">
           <span className="text-secondary">Pincode</span>
@@ -120,14 +77,13 @@ function SummaryContent({ combo }) {
       </ul>
 
       <div className="border-t border-leaf/15 pt-4">
-        <div className="flex items-center justify-between text-sm text-secondary">
-          <span>Per day</span>
-          <span>₹{pricePerDay}</span>
+        <div className="flex items-center justify-between text-base font-semibold text-soil">
+          <span>{monthlyPlan.name}</span>
+          <span>
+            ₹{currency.format(monthlyPlan.basePrice)}/{monthlyPlan.duration}
+          </span>
         </div>
-        <div className="mt-1 flex items-center justify-between text-base font-semibold text-soil">
-          <span>Est. monthly ({frequency.label.toLowerCase()})</span>
-          <span>₹{currency.format(monthlyTotal)}</span>
-        </div>
+        <p className="mt-1 text-sm text-secondary">One price. Your picks can change every week.</p>
       </div>
 
       <div>
@@ -143,7 +99,7 @@ function SummaryContent({ combo }) {
         <p className="mt-2 text-center text-sm text-secondary">
           {isComplete
             ? 'Opens WhatsApp with your box details filled in.'
-            : 'Pick 3 vegetables and 2 leafy greens to continue.'}
+            : 'Pick at least 1 vegetable to continue.'}
         </p>
       </div>
     </div>
@@ -153,9 +109,13 @@ function SummaryContent({ combo }) {
 function ComboBuilder() {
   const combo = useComboBuilder()
   const [activeTab, setActiveTab] = useState('vegetables')
+  const [category, setCategory] = useState(vegetableCategories[0].id)
   const reduceMotion = useReducedMotion()
 
   const currentTab = TABS.find((tab) => tab.id === activeTab)
+  const visibleItems =
+    activeTab === 'vegetables' ? currentTab.data.filter((item) => item.category === category) : currentTab.data
+  const pickedIn = (id) => vegetables.filter((v) => v.category === id && combo.state.vegetables.includes(v.id)).length
   const currentCount = combo.state[activeTab].length
   const currentLimit = LIMITS[activeTab]
   const limitReached = currentCount >= currentLimit.max
@@ -165,8 +125,8 @@ function ComboBuilder() {
       id="combo-builder"
       align="left"
       eyebrow="Build your box"
-      title="Build your daily box"
-      intro="Pick 3 vegetables, 2 leafy greens or herbs, and up to 2 fruits — or start from a preset."
+      title="Build your weekly box"
+      intro={`Pick up to ${LIMITS.vegetables.max} vegetables and ${LIMITS.leafyGreens.max} leafy greens or herbs — or start from a preset. Change your picks until ${delivery.cutoff}; we deliver on ${delivery.day} morning.`}
     >
       <Reveal className="mt-6 flex flex-wrap gap-2">
         {presets.map((preset) => (
@@ -201,6 +161,33 @@ function ComboBuilder() {
             ))}
           </div>
 
+          {activeTab === 'vegetables' && (
+            <div
+              role="radiogroup"
+              aria-label="Vegetable group"
+              className="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0"
+            >
+              {vegetableCategories.map((cat) => {
+                const count = pickedIn(cat.id)
+                return (
+                  <Button
+                    key={cat.id}
+                    variant="toggle"
+                    size="sm"
+                    selected={category === cat.id}
+                    role="radio"
+                    aria-checked={category === cat.id}
+                    onClick={() => setCategory(cat.id)}
+                    className="shrink-0"
+                  >
+                    {cat.label}
+                    {count > 0 && ` · ${count}`}
+                  </Button>
+                )
+              })}
+            </div>
+          )}
+
           <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
             <p className="text-sm font-medium text-secondary">
               {currentCount} of {currentLimit.max} selected
@@ -212,7 +199,7 @@ function ComboBuilder() {
           </div>
 
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {currentTab.data.map((item) => {
+            {visibleItems.map((item) => {
               const selected = combo.state[activeTab].includes(item.id)
               return (
                 <ProduceCard

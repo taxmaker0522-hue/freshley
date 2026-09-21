@@ -1,5 +1,5 @@
-import { plans } from '../data/plans'
-import { WHATSAPP_NUMBER } from '../data/site'
+import { monthlyPlan } from '../data/plans'
+import { WHATSAPP_NUMBER, delivery } from '../data/site'
 
 const currency = new Intl.NumberFormat('en-IN')
 
@@ -8,21 +8,19 @@ export function waLink(message) {
 }
 
 export function buildGenericMessage() {
-  return "Hi Freshley! I'd like to know more about your daily vegetable box."
+  return "Hi Freshley! I'd like to know more about your weekly vegetable box."
 }
 
 export function buildBoxMessage(combo) {
-  const { selectedItems, frequency, deliverySlot, pricePerDay, monthlyTotal, state } = combo
-  const plan = plans.find((p) => p.id === state.planId)
+  const { selectedItems, state } = combo
   const items = selectedItems.map((item) => `${item.emoji} ${item.name}`).join(', ')
 
   return [
     "Hi Freshley! I'd like to subscribe to this box:",
     items,
-    `Frequency: ${frequency.label} · Slot: ${deliverySlot.label}`,
-    `Plan: ${plan ? `${plan.name} (${plan.duration})` : 'not chosen yet'}`,
+    `Delivery: every ${delivery.day} morning`,
+    `Plan: ${monthlyPlan.name} (₹${currency.format(monthlyPlan.basePrice)} a ${monthlyPlan.duration})`,
     `Pincode: ${state.pincode || 'not checked yet'}`,
-    `About ₹${pricePerDay}/day, roughly ₹${currency.format(monthlyTotal)} a month.`,
   ].join('\n')
 }
 

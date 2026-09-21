@@ -4,6 +4,13 @@
 // PLACEHOLDER — not a real number. Replace before launch.
 export const WHATSAPP_NUMBER = '919000000000'
 
+// The weekly rhythm, used by the hero, plans, builder, FAQ and WhatsApp message.
+// Customers can change their box until `cutoff`; it is delivered on `day` morning.
+export const delivery = {
+  day: 'Sunday',
+  cutoff: 'Saturday 12 pm',
+}
+
 // Single place for the rest of the business details. Values marked PLACEHOLDER
 // must be replaced before launch — each one is listed in TODO-content.md.
 export const site = {

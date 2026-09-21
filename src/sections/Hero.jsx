@@ -2,8 +2,9 @@ import { motion, useReducedMotion } from 'motion/react'
 import Blob from '../components/Blob'
 import Button from '../components/Button'
 import ProduceScene from '../components/ProduceScene'
+import { delivery } from '../data/site'
 
-const trustChips = ['100% organic', 'Delivered by 8 am', 'Pause anytime']
+const trustChips = ['Washed in fresh water', 'Hand-graded & sorted', `Delivered every ${delivery.day}`]
 
 const containerVariants = {
   hidden: {},
@@ -38,15 +39,15 @@ function Hero() {
           variants={itemVariants}
           className="text-3xl font-semibold leading-[1.1] text-soil sm:text-5xl lg:text-display"
         >
-          Farm-fresh vegetables at your door, <em className="italic text-leaf">every morning</em>
+          Farm-fresh vegetables at your door, <em className="italic text-leaf">ready for your week</em>
         </motion.h1>
 
         <motion.p
           variants={itemVariants}
           className="mx-auto mt-5 max-w-md text-lg text-secondary lg:mx-0"
         >
-          Zero pesticides, picked yesterday, on your table before breakfast —
-          straight from farms we know by name.
+          Washed in fresh water, hand-graded and sorted, then delivered every {delivery.day}{' '}
+          morning — straight from farms we know by name.
         </motion.p>
 
         <motion.div

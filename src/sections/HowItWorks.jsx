@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { RevealGroup, RevealItem } from '../components/Reveal'
 import Section from '../components/Section'
+import { delivery } from '../data/site'
 
 function BoxIcon(props) {
   return (
@@ -47,22 +48,22 @@ const steps = [
   {
     icon: BoxIcon,
     title: 'Build your box',
-    description: 'Pick your vegetables, greens and fruits — or start from a preset.',
+    description: 'Pick up to 8 vegetables and 5 leafy greens — or start from a preset.',
   },
   {
     icon: PlanIcon,
-    title: 'Choose a plan',
-    description: 'Trial week, monthly or quarterly. Pause or skip anytime.',
+    title: 'Subscribe monthly',
+    description: 'One monthly plan. You choose your picks again each week.',
   },
   {
     icon: HarvestIcon,
-    title: 'We harvest at dawn',
-    description: 'Your order is picked fresh from the farm before sunrise.',
+    title: 'Picked, washed, sorted',
+    description: 'Harvested fresh, washed in fresh water, then hand-graded and sorted.',
   },
   {
     icon: DoorIcon,
-    title: 'At your door by 8 am',
-    description: 'Delivered in a returnable crate, before your day begins.',
+    title: `At your door on ${delivery.day}`,
+    description: `Delivered in a returnable crate. Change your picks until ${delivery.cutoff}.`,
   },
 ]
 
@@ -80,7 +81,7 @@ function HowItWorks() {
       id="how-it-works"
       eyebrow="How it works"
       title="From the field to your kitchen"
-      intro="Four steps, one morning. No warehouse in between."
+      intro="Four steps, one weekly delivery. No warehouse in between."
     >
       <div ref={containerRef} className="relative mt-16">
         <div className="pointer-events-none absolute left-6 top-6 bottom-6 w-0.5 bg-leaf/15 md:hidden">

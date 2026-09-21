@@ -51,9 +51,6 @@ function ProduceCard({ item, selected, disabled, shake, onToggle }) {
       <span className="text-xs text-secondary">
         {item.regionalName.te} · {item.regionalName.hi}
       </span>
-      <span className="text-xs font-semibold text-leaf">
-        ₹{item.pricePerDay}/day · {item.unit}
-      </span>
     </motion.button>
   )
 }

@@ -47,7 +47,7 @@ const sampleTestimonials = import.meta.env.DEV
         id: 'sample-6',
         name: 'Faisal Ahmed',
         location: 'Begumpet, Hyderabad',
-        quote: 'The quarterly plan paid for itself in two months. Sunday fruit bonus is a nice touch.',
+        quote: 'The monthly plan paid for itself in two months. Sunday morning delivery suits us perfectly.',
         sample: true,
       },
     ]

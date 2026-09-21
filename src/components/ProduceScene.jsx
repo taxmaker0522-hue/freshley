@@ -10,28 +10,24 @@ import {
   useTransform,
 } from 'motion/react'
 import scene from '../data/hero-scene.json'
-import banana from '../assets/produce/banana.webp'
 import basket from '../assets/produce/basket.webp'
 import brinjal from '../assets/produce/brinjal.webp'
 import capsicum from '../assets/produce/capsicum.webp'
 import carrot from '../assets/produce/carrot.webp'
 import coriander from '../assets/produce/coriander.webp'
-import mango from '../assets/produce/mango.webp'
 import spinach from '../assets/produce/spinach.webp'
 import tomato from '../assets/produce/tomato.webp'
 
-const images = { banana, basket, brinjal, capsicum, carrot, coriander, mango, spinach, tomato }
+const images = { basket, brinjal, capsicum, carrot, coriander, spinach, tomato }
 
 // Intrinsic pixel size of each file, so the browser reserves the right aspect
 // ratio before the image loads. Update alongside the imports if a file is swapped.
 const sizes = {
-  banana: [1000, 723],
   basket: [753, 514],
   brinjal: [727, 608],
   capsicum: [655, 800],
   carrot: [1000, 590],
   coriander: [1000, 444],
-  mango: [512, 404],
   spinach: [900, 485],
   tomato: [900, 601],
 }

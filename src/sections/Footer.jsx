@@ -1,5 +1,5 @@
 import { liveFarms } from '../data/farms'
-import { site, WHATSAPP_NUMBER } from '../data/site'
+import { delivery, site, WHATSAPP_NUMBER } from '../data/site'
 
 function LeafMark(props) {
   return (
@@ -87,8 +87,8 @@ function Footer() {
               <span className="font-heading text-lg font-semibold text-cream">{site.name}</span>
             </div>
             <p className="mt-3 max-w-xs text-sm text-cream/70">
-              Organic vegetables, greens and fruit, delivered fresh from farms we know by name —
-              every morning, before 8 am.
+              Fresh vegetables and leafy greens, washed, hand-graded and sorted, delivered from
+              farms we know by name — every {delivery.day} morning.
             </p>
             <div className="mt-5 flex gap-3">
               {socialLinks.map((social) => (

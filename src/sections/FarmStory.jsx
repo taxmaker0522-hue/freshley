@@ -54,7 +54,7 @@ function FarmCard({ farm, gradientClass }) {
           ))}
         </div>
 
-        <p className="text-sm font-semibold text-muted">Organic since {farm.organicSince}</p>
+        <p className="text-sm font-semibold text-muted">Farming since {farm.farmingSince}</p>
       </div>
     </div>
   )

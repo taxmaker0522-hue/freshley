@@ -1,6 +1,6 @@
 # Freshley
 
-Subscription-based daily home delivery of fresh organic vegetables, leafy greens and fruits. Built for urban Indian families, mobile-first.
+Monthly subscription with a weekly home delivery of fresh vegetables and leafy greens (box chosen weekly, changes close Saturday 12 pm, delivered Sunday morning). Built for urban Indian families, mobile-first.
 
 Full project brief, brand tokens and working rules live in [CLAUDE.md](CLAUDE.md).
 
@@ -48,7 +48,7 @@ src/
 
 ## Where things stand
 
-- The daily box (ComboBuilder), plans, delivery-area check, and the WhatsApp
+- The weekly box (ComboBuilder), plans, delivery-area check, and the WhatsApp
   hand-off are functionally complete against a placeholder dataset.
 - The hero is a 2.5D scene built from real photo cutouts (Motion-driven
   parallax/tilt), not 3D — see the "Hero" note in CLAUDE.md for why.

@@ -26,11 +26,19 @@ Tick each item off as real data lands.
       still linked from the footer
 - [ ] `legal.privacy`, `legal.terms`, `legal.refund` — currently `#`; need real pages
 
+## `src/data/site.js` — weekly rhythm
+
+- [ ] `delivery.day` (Sunday) and `delivery.cutoff` (Saturday 12 pm) drive every
+      mention on the site. Confirm the delivery **time window** — the old
+      "by 8 am / 6–8 am" claims were removed because they were not re-confirmed.
+
 ## `src/data/plans.js`
 
-- [ ] `basePrice` for Trial week / Monthly / Quarterly — invented numbers
-- [ ] `householdSizes[].multiplier` — invented scaling
-- [ ] `features` copy (swap counts, pause days) — confirm against real policy
+- [ ] `monthlyPlan.basePrice` — invented number (one monthly subscription, no
+      weekly or per-item price)
+- [ ] Household-size pricing was removed (the box is now capped at 8 vegetables
+      + 5 greens); say if larger households should pay more
+- [ ] Skipping / pausing a week was removed from the copy — confirm the policy
 
 ## `src/data/farms.js` (`sample: true`)
 
@@ -53,14 +61,22 @@ Tick each item off as real data lands.
 
 ## `src/data/produce.js`
 
-- [ ] `pricePerDay` and `unit` for all 30 items — rough estimates
+- [ ] **Replace with the real catalogue: 32 vegetables + 10 leafy greens.** Only
+      14 + 8 are here now. Each vegetable needs a `category` from
+      `vegetableCategories` (the builder shows one group at a time). Presets in
+      `presets.js` reference item ids, so re-check them after the swap.
 - [ ] Telugu / Hindi names — verify spellings with a native speaker
 - [ ] `seasonal` flags — confirm against your actual sourcing calendar
 
 ## `src/data/faqs.js`
 
-- [ ] Answers reference policies (swaps, pause days, lab testing, auto-pay) —
-      confirm each is true before launch
+- [ ] Answers reference policies (Saturday cut-off fallback, auto-pay, crate
+      return, cancellation) — confirm each is true before launch
+
+## Images
+
+- [ ] `public/og-image.jpg` still shows the old headline ("every morning"),
+      "100% organic" and fruit. Regenerate it to match the new hero copy.
 
 ## Later prompts
 

@@ -24,7 +24,7 @@ function useOnScreen(selector) {
 }
 
 function MiniCartBar() {
-  const { selectedItems, pricePerDay, hasPicks } = useComboBuilder()
+  const { selectedItems, hasPicks } = useComboBuilder()
   const summaryOnScreen = useOnScreen('[data-combo-summary]')
   const footerOnScreen = useOnScreen('footer')
   const reduceMotion = useReducedMotion()
@@ -54,7 +54,7 @@ function MiniCartBar() {
               <span className="font-semibold text-soil">
                 {selectedItems.length} {selectedItems.length === 1 ? 'item' : 'items'}
               </span>
-              <span className="text-secondary">· ₹{pricePerDay}/day</span>
+              <span className="text-secondary">· this week</span>
             </p>
             <Button href="#combo-summary" size="sm">
               Review box

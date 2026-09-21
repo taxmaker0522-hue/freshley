@@ -1,6 +1,6 @@
 # Freshley
 
-Subscription-based daily home delivery of fresh organic vegetables, leafy greens and fruits.
+Monthly subscription with a weekly home delivery of fresh vegetables and leafy greens. The box is chosen weekly (up to 8 vegetables, 5 greens); changes close Saturday 12 pm and it is delivered Sunday morning (`delivery` in `src/data/site.js`). No fruits, no "organic" or "pesticide" claims.
 
 **Audience:** Urban Indian families, mostly on mobile.
 **Tone:** Warm, honest, farm-fresh, premium but not expensive-looking.

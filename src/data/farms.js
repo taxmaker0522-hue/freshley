@@ -14,7 +14,7 @@ const sampleFarms = import.meta.env.DEV
         village: 'Chittoor',
         distanceKm: 42,
         grows: ['Tomato', 'Brinjal', 'Okra'],
-        organicSince: 2014,
+        farmingSince: 2014,
         sample: true,
       },
       {
@@ -23,7 +23,7 @@ const sampleFarms = import.meta.env.DEV
         village: 'Medak',
         distanceKm: 58,
         grows: ['Spinach', 'Methi', 'Coriander'],
-        organicSince: 2017,
+        farmingSince: 2017,
         sample: true,
       },
       {
@@ -32,7 +32,7 @@ const sampleFarms = import.meta.env.DEV
         village: 'Anantapur',
         distanceKm: 63,
         grows: ['Mango', 'Papaya', 'Banana'],
-        organicSince: 2011,
+        farmingSince: 2011,
         sample: true,
       },
     ]
