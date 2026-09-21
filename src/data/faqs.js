@@ -4,7 +4,7 @@ export const faqs = [
   {
     id: 'weekly-picks',
     question: 'How does the weekly box work?',
-    answer: `You subscribe once a month and choose what goes in your box each week — up to 8 vegetables and 5 leafy greens or herbs. Update your picks any time until ${delivery.cutoff}, and your box arrives on ${delivery.day} morning.`,
+    answer: `You subscribe once a month and choose what goes in your box each week — up to 8 vegetables and 5 leafy greens or herbs. Update your picks any time until ${delivery.cutoff}, and your box arrives on ${delivery.day} morning, ${delivery.time}.`,
   },
   {
     id: 'cutoff',
@@ -18,10 +18,10 @@ export const faqs = [
       'Leave your crate slot or tell us a safe spot in delivery instructions — we leave your order there and text you a photo confirmation.',
   },
   {
-    id: 'washing-grading',
-    question: 'How are the vegetables prepared?',
+    id: 'harvest-grading',
+    question: 'Where do the vegetables come from?',
     answer:
-      'Everything is washed in fresh water, then hand-graded and sorted, so what reaches your crate is clean and only the best pieces make the cut.',
+      'Our vegetables are harvested at farms that sit on fresh water sources, then hand-graded and sorted, so only the best pieces make it into your crate.',
   },
   {
     id: 'payment',

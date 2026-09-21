@@ -91,7 +91,7 @@ function DeliveryCheck() {
             className="mt-6 rounded-2xl border border-success/25 bg-success/10 px-6 py-5 shadow-soft"
           >
             <p className="font-heading text-lg font-semibold text-success">
-              Yes! We deliver to {pincode} every {delivery.day} morning.
+              Yes! We deliver to {pincode} every {delivery.day} morning, {delivery.time}.
             </p>
           </motion.div>
         )}

@@ -62,8 +62,8 @@ function CalendarCheckIcon(props) {
 const features = [
   {
     icon: WaterDropIcon,
-    title: 'Washed in fresh water',
-    description: 'Every vegetable is rinsed clean in fresh water before it is packed.',
+    title: 'Harvested at fresh water sources',
+    description: 'Our vegetables are harvested at farms that sit on fresh water sources.',
   },
   {
     icon: ClockIcon,
@@ -82,7 +82,7 @@ const features = [
   },
   {
     icon: SunriseIcon,
-    title: `Delivered every ${delivery.day} morning`,
+    title: `Delivered every ${delivery.day}, ${delivery.time}`,
     description: 'On your doorstep before the day gets going.',
   },
   {

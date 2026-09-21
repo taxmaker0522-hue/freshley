@@ -4,7 +4,7 @@ import Button from '../components/Button'
 import ProduceScene from '../components/ProduceScene'
 import { delivery } from '../data/site'
 
-const trustChips = ['Washed in fresh water', 'Hand-graded & sorted', `Delivered every ${delivery.day}`]
+const trustChips = ['Harvested at fresh water sources', 'Hand-graded & sorted', `Delivered ${delivery.day}, ${delivery.time}`]
 
 const containerVariants = {
   hidden: {},
@@ -46,8 +46,8 @@ function Hero() {
           variants={itemVariants}
           className="mx-auto mt-5 max-w-md text-lg text-secondary lg:mx-0"
         >
-          Washed in fresh water, hand-graded and sorted, then delivered every {delivery.day}{' '}
-          morning — straight from farms we know by name.
+          Harvested at fresh water sources, hand-graded and sorted, then delivered every{' '}
+          {delivery.day} morning, {delivery.time} — straight from farms we know by name.
         </motion.p>
 
         <motion.div

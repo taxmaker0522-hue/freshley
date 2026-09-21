@@ -57,13 +57,13 @@ const steps = [
   },
   {
     icon: HarvestIcon,
-    title: 'Picked, washed, sorted',
-    description: 'Harvested fresh, washed in fresh water, then hand-graded and sorted.',
+    title: 'Harvested, graded, sorted',
+    description: 'Harvested at fresh water sources, then hand-graded and sorted.',
   },
   {
     icon: DoorIcon,
     title: `At your door on ${delivery.day}`,
-    description: `Delivered in a returnable crate. Change your picks until ${delivery.cutoff}.`,
+    description: `Delivered ${delivery.time} in a returnable crate. Change your picks until ${delivery.cutoff}.`,
   },
 ]
 

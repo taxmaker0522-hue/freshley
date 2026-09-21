@@ -18,7 +18,7 @@ export function buildBoxMessage(combo) {
   return [
     "Hi Freshley! I'd like to subscribe to this box:",
     items,
-    `Delivery: every ${delivery.day} morning`,
+    `Delivery: every ${delivery.day} morning, ${delivery.time}`,
     `Plan: ${monthlyPlan.name} (₹${currency.format(monthlyPlan.basePrice)} a ${monthlyPlan.duration})`,
     `Pincode: ${state.pincode || 'not checked yet'}`,
   ].join('\n')

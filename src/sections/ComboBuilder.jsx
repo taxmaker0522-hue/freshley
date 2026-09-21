@@ -58,7 +58,7 @@ function SummaryContent({ combo }) {
       <ul className="flex flex-col gap-2 text-sm">
         <li className="flex items-center justify-between gap-2">
           <span className="text-secondary">Delivery</span>
-          <span className="font-medium text-soil">Every {delivery.day} morning</span>
+          <span className="font-medium text-soil">Every {delivery.day}, {delivery.time}</span>
         </li>
         <li className="flex items-center justify-between gap-2">
           <span className="text-secondary">Change picks until</span>
@@ -126,7 +126,7 @@ function ComboBuilder() {
       align="left"
       eyebrow="Build your box"
       title="Build your weekly box"
-      intro={`Pick up to ${LIMITS.vegetables.max} vegetables and ${LIMITS.leafyGreens.max} leafy greens or herbs — or start from a preset. Change your picks until ${delivery.cutoff}; we deliver on ${delivery.day} morning.`}
+      intro={`Pick up to ${LIMITS.vegetables.max} vegetables and ${LIMITS.leafyGreens.max} leafy greens or herbs — or start from a preset. Change your picks until ${delivery.cutoff}; we deliver on ${delivery.day} morning, ${delivery.time}.`}
     >
       <Reveal className="mt-6 flex flex-wrap gap-2">
         {presets.map((preset) => (
