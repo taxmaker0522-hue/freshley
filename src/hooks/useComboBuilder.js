@@ -12,6 +12,7 @@ export const LIMITS = {
 const DEFAULT_STATE = {
   vegetables: [],
   leafyGreens: ['curry-leaves'],
+  deliveryDay: null,
   pincode: '',
 }
 
@@ -75,6 +76,10 @@ function applyPreset(preset) {
   })
 }
 
+function setDeliveryDay(day) {
+  setState({ ...state, deliveryDay: day })
+}
+
 function setPincode(code) {
   setState({ ...state, pincode: code })
 }
@@ -97,7 +102,7 @@ export function useComboBuilder() {
     [snapshot],
   )
 
-  const isComplete = snapshot.vegetables.length >= LIMITS.vegetables.min
+  const isComplete = snapshot.vegetables.length >= LIMITS.vegetables.min && Boolean(snapshot.deliveryDay)
 
   // True once the visitor has changed the box from the pre-selected default
   // (curry leaves only), so the mini-cart never appears on a first visit.
@@ -113,6 +118,7 @@ export function useComboBuilder() {
       if (toggleItem(category, id)) setBlockedId(id)
     },
     applyPreset,
+    setDeliveryDay,
     setPincode,
     blockedId,
     selectedItems,

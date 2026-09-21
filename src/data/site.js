@@ -5,12 +5,19 @@
 export const WHATSAPP_NUMBER = '919000000000'
 
 // The weekly rhythm, used by the hero, plans, builder, FAQ and WhatsApp message.
-// Customers can change their box until `cutoff`; it is delivered on `day`
-// morning, `time`.
+// Each customer picks a delivery day (any day of the week) and gets one box a
+// week on that day. They can change their box until `cutoff` the day before;
+// it arrives next morning, `time`.
 export const delivery = {
-  day: 'Sunday',
-  cutoff: 'Saturday 12 pm',
+  cutoff: '12 pm the day before',
   time: 'before 7 am',
+  days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+}
+
+// The day whose 12 pm is the order deadline for a delivery day.
+export function cutoffDayFor(day) {
+  const i = delivery.days.indexOf(day)
+  return delivery.days[(i + delivery.days.length - 1) % delivery.days.length]
 }
 
 // Single place for the rest of the business details. Values marked PLACEHOLDER

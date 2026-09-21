@@ -62,8 +62,8 @@ const steps = [
   },
   {
     icon: DoorIcon,
-    title: `At your door on ${delivery.day}`,
-    description: `Delivered ${delivery.time} in a returnable crate. Change your picks until ${delivery.cutoff}.`,
+    title: `At your door, ${delivery.time}`,
+    description: `Delivered weekly on your chosen day in a returnable crate. Order by ${delivery.cutoff}.`,
   },
 ]
 

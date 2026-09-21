@@ -88,7 +88,7 @@ function Footer() {
             </div>
             <p className="mt-3 max-w-xs text-sm text-cream/70">
               Fresh vegetables and leafy greens, harvested at fresh water sources, hand-graded and
-              sorted, delivered from farms we know by name — every {delivery.day}, {delivery.time}.
+              sorted, delivered from farms we know by name — every week, {delivery.time}.
             </p>
             <div className="mt-5 flex gap-3">
               {socialLinks.map((social) => (

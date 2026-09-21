@@ -47,7 +47,7 @@ const sampleTestimonials = import.meta.env.DEV
         id: 'sample-6',
         name: 'Faisal Ahmed',
         location: 'Begumpet, Hyderabad',
-        quote: 'The monthly plan paid for itself in two months. Sunday morning delivery suits us perfectly.',
+        quote: 'The monthly plan paid for itself in two months. Choosing our own delivery day suits us perfectly.',
         sample: true,
       },
     ]

@@ -28,9 +28,12 @@ Tick each item off as real data lands.
 
 ## `src/data/site.js` — weekly rhythm
 
-- [ ] `delivery.day` (Sunday), `delivery.cutoff` (Saturday 12 pm) and
-      `delivery.time` (before 7 am) drive every mention on the site — confirm
-      the day, since the cut-off is "12 pm the day before delivery".
+- [ ] `delivery.cutoff` (12 pm the day before), `delivery.time` (before 7 am)
+      and `delivery.days` (Mon–Sun) drive every mention on the site. Customers
+      pick their own weekly delivery day in the builder; confirm you can serve
+      all seven days in every pincode.
+- [ ] FAQ "What happens if I miss the 12 pm cut-off?" — the answer (last saved
+      picks are packed) is my assumption; confirm.
 - [ ] "Harvested at fresh water sources" and "hand-graded & sorted" are stated
       as facts on the site (hero, trust cards, FAQ) — make sure they are true
       for every farm you source from.

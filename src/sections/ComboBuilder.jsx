@@ -8,7 +8,7 @@ import Section from '../components/Section'
 import { monthlyPlan } from '../data/plans'
 import { vegetableCategories, vegetables, leafyGreens } from '../data/produce'
 import { presets } from '../data/presets'
-import { delivery } from '../data/site'
+import { cutoffDayFor, delivery } from '../data/site'
 import { buildBoxMessage, waLink } from '../utils/whatsapp'
 import { LIMITS, useComboBuilder } from '../hooks/useComboBuilder'
 
@@ -20,7 +20,7 @@ const TABS = [
 const currency = new Intl.NumberFormat('en-IN')
 
 function SummaryContent({ combo }) {
-  const { selectedItems, state, toggleItem, isComplete } = combo
+  const { selectedItems, state, toggleItem, setDeliveryDay, isComplete } = combo
 
   const categoryOf = (id) => (state.vegetables.includes(id) ? 'vegetables' : 'leafyGreens')
 
@@ -55,14 +55,38 @@ function SummaryContent({ combo }) {
         )}
       </div>
 
+      <div>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-secondary">Delivery day</p>
+        <div role="radiogroup" aria-label="Delivery day" className="flex flex-wrap gap-2">
+          {delivery.days.map((day) => (
+            <Button
+              key={day}
+              variant="toggle"
+              size="sm"
+              selected={state.deliveryDay === day}
+              role="radio"
+              aria-checked={state.deliveryDay === day}
+              aria-label={day}
+              onClick={() => setDeliveryDay(day)}
+            >
+              {day.slice(0, 3)}
+            </Button>
+          ))}
+        </div>
+      </div>
+
       <ul className="flex flex-col gap-2 text-sm">
         <li className="flex items-center justify-between gap-2">
           <span className="text-secondary">Delivery</span>
-          <span className="font-medium text-soil">Every {delivery.day}, {delivery.time}</span>
+          <span className="text-right font-medium text-soil">
+            {state.deliveryDay ? `Every ${state.deliveryDay}, ${delivery.time}` : 'Choose a day above'}
+          </span>
         </li>
         <li className="flex items-center justify-between gap-2">
           <span className="text-secondary">Change picks until</span>
-          <span className="font-medium text-soil">{delivery.cutoff}</span>
+          <span className="text-right font-medium text-soil">
+            {state.deliveryDay ? `${cutoffDayFor(state.deliveryDay)} 12 pm` : delivery.cutoff}
+          </span>
         </li>
         <li className="flex items-center justify-between gap-2">
           <span className="text-secondary">Pincode</span>
@@ -99,7 +123,7 @@ function SummaryContent({ combo }) {
         <p className="mt-2 text-center text-sm text-secondary">
           {isComplete
             ? 'Opens WhatsApp with your box details filled in.'
-            : 'Pick at least 1 vegetable to continue.'}
+            : 'Pick at least 1 vegetable and a delivery day to continue.'}
         </p>
       </div>
     </div>
@@ -126,7 +150,7 @@ function ComboBuilder() {
       align="left"
       eyebrow="Build your box"
       title="Build your weekly box"
-      intro={`Pick up to ${LIMITS.vegetables.max} vegetables and ${LIMITS.leafyGreens.max} leafy greens or herbs — or start from a preset. Change your picks until ${delivery.cutoff}; we deliver on ${delivery.day} morning, ${delivery.time}.`}
+      intro={`Pick up to ${LIMITS.vegetables.max} vegetables and ${LIMITS.leafyGreens.max} leafy greens or herbs — or start from a preset. Choose your delivery day and order by ${delivery.cutoff} — it arrives next morning, ${delivery.time}, and repeats weekly.`}
     >
       <Reveal className="mt-6 flex flex-wrap gap-2">
         {presets.map((preset) => (
