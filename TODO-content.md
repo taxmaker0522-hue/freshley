@@ -71,10 +71,11 @@ Tick each item off as real data lands.
 
 ## `src/data/produce.js`
 
-- [ ] **Replace with the real catalogue: 32 vegetables + 10 leafy greens.** Only
-      14 + 8 are here now. Each vegetable needs a `category` from
+- [ ] **Catalogue is 32 vegetables + 10 leafy greens, filled from common Indian
+      market lists (I chose the items).** Add, drop or rename anything you do
+      not actually sell. Each vegetable needs a `category` from
       `vegetableCategories` (the builder shows one group at a time). Presets in
-      `presets.js` reference item ids, so re-check them after the swap.
+      `presets.js` reference item ids, so re-check them after any change.
 - [ ] Telugu / Hindi names — verify spellings with a native speaker
 - [ ] `seasonal` flags — confirm against your actual sourcing calendar
 
