@@ -32,8 +32,12 @@ Tick each item off as real data lands.
       and `delivery.days` (Mon–Sun) drive every mention on the site. Customers
       pick their own weekly delivery day in the builder; confirm you can serve
       all seven days in every pincode.
-- [ ] FAQ "What happens if I miss the 12 pm cut-off?" — the answer (last saved
-      picks are packed) is my assumption; confirm.
+- [ ] FAQ "What happens if I miss the 12 pm cut-off?" — says the delivery moves
+      to the day after (your rule). Confirm whether that applies to one delivery
+      only or shifts the customer's weekly day.
+- [ ] Pincodes: you serve only a few, so `src/data/pincodes.js` (sample list)
+      needs your real ones, and the FAQ "Which areas do you deliver to?" names
+      five cities — make it match.
 - [ ] "Harvested at fresh water sources" and "hand-graded & sorted" are stated
       as facts on the site (hero, trust cards, FAQ) — make sure they are true
       for every farm you source from.

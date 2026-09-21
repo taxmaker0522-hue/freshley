@@ -14,7 +14,7 @@ export const faqs = [
   {
     id: 'cutoff',
     question: 'What happens if I miss the 12 pm cut-off?',
-    answer: `Your box is packed from the picks you last saved, so your next delivery is never empty. Changes made after ${delivery.cutoff} apply from the following week.`,
+    answer: `No problem — if you order or change your box after ${delivery.cutoff}, that delivery simply moves to the day after, still ${delivery.time}.`,
   },
   {
     id: 'not-home',
