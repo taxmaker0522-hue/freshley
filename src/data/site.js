@@ -10,7 +10,7 @@ export const WHATSAPP_NUMBER = '919000000000'
 // it arrives next morning, `time`.
 export const delivery = {
   cutoff: '12 pm the day before',
-  time: 'before 7 am',
+  time: 'between 4 am - 7 am',
   days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
 }
 
