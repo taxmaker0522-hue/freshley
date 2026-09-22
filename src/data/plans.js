@@ -6,7 +6,7 @@ export const monthlyPlan = {
   id: 'monthly',
   name: 'Monthly subscription',
   duration: 'month',
-  basePrice: 1499, // PLACEHOLDER — invented number, replace before launch
+  basePrice: 1999,
   description: 'One monthly subscription. You choose what goes in your basket each week.',
   features: [
     `A fresh basket every week, on the day you choose, ${delivery.time}`,

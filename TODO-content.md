@@ -44,7 +44,7 @@ Tick each item off as real data lands.
 
 ## `src/data/plans.js`
 
-- [ ] `monthlyPlan.basePrice` — invented number (one monthly subscription, no
+- [x] `monthlyPlan.basePrice` — now ₹1,999 (one monthly subscription, no
       weekly or per-item price)
 - [ ] Household-size pricing was removed (the box is now capped at 8 vegetables
       + 5 greens); say if larger households should pay more
