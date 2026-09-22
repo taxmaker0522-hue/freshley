@@ -59,8 +59,9 @@ const features = [
   },
   {
     icon: CalendarCheckIcon,
-    title: 'Pick your box every week',
-    description: `Change your picks any time until ${delivery.cutoff}.`,
+    title: 'Combo for your family',
+    description:
+      'Pick your choice of vegetables and leafy greens — 52 in total. We deliver 8 vegetables and 5 leafy greens to you every week, across 4 deliveries a month.',
   },
 ]
 
