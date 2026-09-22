@@ -46,7 +46,7 @@ function Hero() {
           variants={itemVariants}
           className="mx-auto mt-5 max-w-md text-lg text-secondary lg:mx-0"
         >
-          Vegetables, hand-graded and sorted, then delivered to your home.
+          Vegetables are hand-graded and sorted, then delivered direct to your home.
         </motion.p>
 
         <motion.div
