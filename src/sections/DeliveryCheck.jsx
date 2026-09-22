@@ -47,11 +47,12 @@ function DeliveryCheck() {
       width="narrow"
       eyebrow="Delivery areas"
       title="Do we deliver to you?"
-      intro="Enter your pincode and find out in a second."
+      intro="We aim to reach your home before the sunrise, to greet your family with fresh veggies."
     >
       <Blob from="lg" className="-right-40 top-1/2 h-80 w-80 -translate-y-1/2" />
       <Reveal className="text-center">
-      <form onSubmit={handleCheck} className="mx-auto mt-8 flex max-w-sm flex-col gap-3 sm:flex-row">
+      <p className="mt-6 text-sm text-secondary">Enter your pincode and find out in a second.</p>
+      <form onSubmit={handleCheck} className="mx-auto mt-3 flex max-w-sm flex-col gap-3 sm:flex-row">
         <input
           type="text"
           inputMode="numeric"
