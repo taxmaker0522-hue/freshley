@@ -12,29 +12,11 @@ function WaterDropIcon(props) {
   )
 }
 
-function ClockIcon(props) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3.5 2" />
-    </svg>
-  )
-}
-
 function BadgeIcon(props) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
       <path d="M12 3l2.2 2.1 3-.4.6 3 2.7 1.5-1.1 2.8 1.1 2.8-2.7 1.5-.6 3-3-.4L12 21l-2.2-2.1-3 .4-.6-3-2.7-1.5 1.1-2.8-1.1-2.8 2.7-1.5.6-3 3 .4L12 3Z" />
       <path d="M8.5 12.5l2.3 2.3 4.7-5.1" />
-    </svg>
-  )
-}
-
-function CrateIcon(props) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <rect x="3.5" y="8" width="17" height="11" rx="1.5" />
-      <path d="M3.5 12.5h17M8 8V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M9 12.5V19M15 12.5V19" />
     </svg>
   )
 }
@@ -66,19 +48,9 @@ const features = [
     description: 'Our vegetables are harvested at farms that sit on fresh water sources.',
   },
   {
-    icon: ClockIcon,
-    title: 'Harvested within 24 hours',
-    description: 'Picked at the farm the evening before it reaches you.',
-  },
-  {
     icon: BadgeIcon,
-    title: 'Hand-graded & sorted',
-    description: 'Every piece is checked by hand, so only the best goes into your crate.',
-  },
-  {
-    icon: CrateIcon,
-    title: 'Zero-plastic returnable crates',
-    description: 'Delivered in reusable crates we collect back — no plastic bags.',
+    title: 'Farm to your door',
+    description: 'Sourced from farm, hand-graded by trained staff, and delivered hygienically to your home.',
   },
   {
     icon: SunriseIcon,
@@ -132,7 +104,7 @@ function TiltCard({ icon: Icon, title, description }) {
 function TrustStrip() {
   return (
     <Section id="trust" band="surface">
-      <RevealGroup className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+      <RevealGroup className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {features.map((feature) => (
           <RevealItem key={feature.title} className="h-full">
             <TiltCard {...feature} />
