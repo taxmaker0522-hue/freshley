@@ -13,6 +13,5 @@ export const monthlyPlan = {
     'Up to 8 vegetables and 5 leafy greens each week',
     `Change your picks any time until ${delivery.cutoff}`,
     'Free delivery',
-    'Returnable crate',
   ],
 }
