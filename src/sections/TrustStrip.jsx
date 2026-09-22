@@ -54,8 +54,8 @@ const features = [
   },
   {
     icon: SunriseIcon,
-    title: `Delivery ${delivery.time} only`,
-    description: 'Weekly, on the day you choose — on your doorstep before the day gets going.',
+    title: `Delivery ${delivery.time}`,
+    description: 'We aim to reach your home before the sunrise to greet your family with fresh veggies.',
   },
   {
     icon: CalendarCheckIcon,
