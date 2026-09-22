@@ -39,15 +39,14 @@ function Hero() {
           variants={itemVariants}
           className="text-3xl font-semibold leading-[1.1] text-soil sm:text-5xl lg:text-display"
         >
-          Farm-fresh vegetables at your door, <em className="italic text-leaf">ready for your week</em>
+          Farm-fresh vegetables at your <em className="italic text-leaf">door step</em>
         </motion.h1>
 
         <motion.p
           variants={itemVariants}
           className="mx-auto mt-5 max-w-md text-lg text-secondary lg:mx-0"
         >
-          Harvested at fresh water sources, hand-graded and sorted, then delivered weekly on the
-          day you choose — order by 12 pm and it arrives next morning, {delivery.time}.
+          Vegetables, hand-graded and sorted, then delivered to your home.
         </motion.p>
 
         <motion.div
