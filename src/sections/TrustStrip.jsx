@@ -82,7 +82,7 @@ const features = [
   },
   {
     icon: SunriseIcon,
-    title: `Next-morning delivery, ${delivery.time}`,
+    title: `Delivery ${delivery.time} only`,
     description: 'Weekly, on the day you choose — on your doorstep before the day gets going.',
   },
   {

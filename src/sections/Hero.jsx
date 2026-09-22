@@ -4,7 +4,7 @@ import Button from '../components/Button'
 import ProduceScene from '../components/ProduceScene'
 import { delivery } from '../data/site'
 
-const trustChips = ['Harvested at fresh water sources', 'Hand-graded & sorted', `Next-morning delivery, ${delivery.time}`]
+const trustChips = ['Harvested at fresh water sources', 'Hand-graded & sorted', `Delivery ${delivery.time} only`]
 
 const containerVariants = {
   hidden: {},
