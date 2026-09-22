@@ -57,7 +57,7 @@ function MiniCartBar() {
               <span className="text-secondary">· this week</span>
             </p>
             <Button href="#combo-summary" size="sm">
-              Review box
+              Review basket
             </Button>
           </div>
         </motion.div>

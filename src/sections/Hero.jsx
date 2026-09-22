@@ -54,7 +54,7 @@ function Hero() {
           className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start"
         >
           <Button href="#combo-builder" className="w-full sm:w-auto">
-            Build my box
+            Build my basket
           </Button>
           <Button href="#plans" variant="secondary" className="w-full sm:w-auto">
             See plans

@@ -47,7 +47,7 @@ function DoorIcon(props) {
 const steps = [
   {
     icon: BoxIcon,
-    title: 'Build your box',
+    title: 'Build your basket',
     description: 'Pick up to 8 vegetables and 5 leafy greens — or start from a preset.',
   },
   {

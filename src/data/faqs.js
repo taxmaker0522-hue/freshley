@@ -3,18 +3,18 @@ import { delivery } from './site'
 export const faqs = [
   {
     id: 'weekly-picks',
-    question: 'How does the weekly box work?',
-    answer: `You subscribe once a month, pick a delivery day, and choose what goes in your box each week — up to 8 vegetables and 5 leafy greens or herbs. Order or change your picks any time until ${delivery.cutoff}, and your box arrives the next morning, ${delivery.time}. It then repeats weekly on the same day.`,
+    question: 'How does the weekly basket work?',
+    answer: `You subscribe once a month, pick a delivery day, and choose what goes in your basket each week — up to 8 vegetables and 5 leafy greens or herbs. Order or change your picks any time until ${delivery.cutoff}, and your basket arrives the next morning, ${delivery.time}. It then repeats weekly on the same day.`,
   },
   {
     id: 'delivery-day',
-    question: 'Which day will my box arrive?',
-    answer: `Any day of the week — you choose. For example, order by 12 pm on Monday and your box arrives on Tuesday morning, ${delivery.time}, and then every Tuesday after that.`,
+    question: 'Which day will my basket arrive?',
+    answer: `Any day of the week — you choose. For example, order by 12 pm on Monday and your basket arrives on Tuesday morning, ${delivery.time}, and then every Tuesday after that.`,
   },
   {
     id: 'cutoff',
     question: 'What happens if I miss the 12 pm cut-off?',
-    answer: `No problem — if you order or change your box after ${delivery.cutoff}, that delivery simply moves to the day after, still ${delivery.time}.`,
+    answer: `No problem — if you order or change your basket after ${delivery.cutoff}, that delivery simply moves to the day after, still ${delivery.time}.`,
   },
   {
     id: 'not-home',

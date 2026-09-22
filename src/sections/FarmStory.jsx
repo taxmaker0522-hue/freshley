@@ -100,7 +100,7 @@ function FarmStory() {
       align="left"
       eyebrow="Our farms"
       title="Know your farmer"
-      intro="Every box traces back to a real farm we visit, not a warehouse."
+      intro="Every basket traces back to a real farm we visit, not a warehouse."
     >
       <RevealGroup className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
         {liveFarms.map((farm, index) => (

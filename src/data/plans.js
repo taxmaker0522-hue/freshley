@@ -7,9 +7,9 @@ export const monthlyPlan = {
   name: 'Monthly subscription',
   duration: 'month',
   basePrice: 1499, // PLACEHOLDER — invented number, replace before launch
-  description: 'One monthly subscription. You choose what goes in your box each week.',
+  description: 'One monthly subscription. You choose what goes in your basket each week.',
   features: [
-    `A fresh box every week, on the day you choose, ${delivery.time}`,
+    `A fresh basket every week, on the day you choose, ${delivery.time}`,
     'Up to 8 vegetables and 5 leafy greens each week',
     `Change your picks any time until ${delivery.cutoff}`,
     'Free delivery',

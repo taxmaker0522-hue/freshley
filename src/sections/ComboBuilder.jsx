@@ -27,7 +27,7 @@ function SummaryContent({ combo }) {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h3 className="font-heading text-lg font-semibold text-soil">Your box</h3>
+        <h3 className="font-heading text-lg font-semibold text-soil">Your basket</h3>
         {selectedItems.length === 0 ? (
           <p className="mt-2 text-sm text-secondary">Nothing picked yet — choose from the tabs.</p>
         ) : (
@@ -118,11 +118,11 @@ function SummaryContent({ combo }) {
           aria-disabled={!isComplete}
           className="w-full"
         >
-          Subscribe to this box
+          Subscribe to this basket
         </Button>
         <p className="mt-2 text-center text-sm text-secondary">
           {isComplete
-            ? 'Opens WhatsApp with your box details filled in.'
+            ? 'Opens WhatsApp with your basket details filled in.'
             : 'Pick at least 1 vegetable and a delivery day to continue.'}
         </p>
       </div>
@@ -148,8 +148,8 @@ function ComboBuilder() {
     <Section
       id="combo-builder"
       align="left"
-      eyebrow="Build your box"
-      title="Build your weekly box"
+      eyebrow="Build your basket"
+      title="Build your weekly basket"
       intro={`Pick up to ${LIMITS.vegetables.max} vegetables and ${LIMITS.leafyGreens.max} leafy greens or herbs — or start from a preset. Choose your delivery day and order by ${delivery.cutoff} — it arrives next morning, ${delivery.time}, and repeats weekly.`}
     >
       <Reveal className="mt-6 flex flex-wrap gap-2">

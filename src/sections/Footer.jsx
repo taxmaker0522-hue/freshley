@@ -59,7 +59,7 @@ const socialLinks = [
 ]
 
 const quickLinks = [
-  { label: 'Build your box', href: '#combo-builder' },
+  { label: 'Build your basket', href: '#combo-builder' },
   { label: 'Plans', href: '#plans' },
   { label: 'How it works', href: '#how-it-works' },
   ...(liveFarms.length > 0 ? [{ label: 'Farms', href: '#farm-story' }] : []),

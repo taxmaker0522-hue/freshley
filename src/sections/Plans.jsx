@@ -20,7 +20,7 @@ function Plans() {
       band="lime"
       eyebrow="Plan"
       title="One simple plan, honest price"
-      intro="No lock-ins, no fine print. Subscribe monthly, then choose what goes in your box each week."
+      intro="No lock-ins, no fine print. Subscribe monthly, then choose what goes in your basket each week."
     >
       <Reveal className="mx-auto mt-12 max-w-md">
         <div className="flex flex-col gap-6 rounded-2xl border border-leaf bg-surface p-6 shadow-lift lg:p-8">
@@ -46,7 +46,7 @@ function Plans() {
           </ul>
 
           <Button href="#combo-builder" className="w-full">
-            Build your box
+            Build your basket
           </Button>
         </div>
       </Reveal>
