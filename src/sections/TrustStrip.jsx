@@ -49,7 +49,7 @@ const features = [
   },
   {
     icon: BadgeIcon,
-    title: 'Farm to your door',
+    title: 'Our Practises',
     description: 'Sourced from farm, hand-graded by trained staff, and delivered hygienically to your home.',
   },
   {
