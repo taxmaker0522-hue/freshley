@@ -71,6 +71,10 @@ Tick each item off as real data lands.
 
 ## `src/data/produce.js`
 
+> Since 23 Sep 2026 the live product list is in the database. Edit it on the
+> **Admin → Products** page. `produce.js` is now only the starting list (and the
+> fallback if the database is unreachable). Keep `emojiFallback` entries there.
+
 - [ ] **Catalogue is 32 vegetables + 10 leafy greens, filled from common Indian
       market lists (I chose the items).** Add, drop or rename anything you do
       not actually sell. Each vegetable needs a `category` from
@@ -83,6 +87,28 @@ Tick each item off as real data lands.
 
 - [ ] Answers reference policies (Saturday cut-off fallback, auto-pay, crate
       return, cancellation) — confirm each is true before launch
+- [ ] **"Auto-pay" is now wrong:** payment is cash at the door (decided
+      23 Sep 2026). Rewrite that answer; check nothing else mentions online payment.
+
+## Accounts, orders & payments (see `SETUP-backend.md`)
+
+- [ ] **Publish the Google app** (SETUP-backend.md step 7). Until then only
+      listed testers can sign in, not customers.
+- [ ] Payment is **cash at the door**. Not built yet:
+  - [ ] Customer-facing line: no online payment; we call to confirm, pay ₹1,999 in cash
+  - [ ] Admin "new subscribers to call" list with **Mark as confirmed**
+  - [ ] Monthly payment status per customer: **Unpaid / Collected** (date, collected by)
+  - [ ] Decide: collect **at the confirmation visit** or **on the first delivery**?
+- [ ] Privacy policy page. It's needed for the Google "unverified app" notice to
+      go away, and because the site now stores names, phone numbers and addresses.
+- [ ] Optional: load the sign-in code only when "Log in" is tapped (about 55 KB
+      gzipped less for first-time visitors)
+
+## App name
+
+- [ ] Considering a rename from "Freshley". Ideas: Pothu (పొద్దు, "early
+      morning"), Suprabhat, Tellavaru, Dawnbasket, Buttalo, Pachchani. Check the
+      domain, Instagram handle and a trademark search (ipindia.gov.in) before choosing.
 
 ## Images
 

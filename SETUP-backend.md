@@ -7,6 +7,18 @@ button says sign-in isn't switched on yet.
 
 Allow about 20 minutes. Everything here is free.
 
+## Status
+
+| Step | Done |
+|---|---|
+| 1. Supabase project created (Mumbai) | ✅ 23 Sep 2026 |
+| 2. Tables + 42 products loaded | ✅ |
+| 3. `.env` filled in, site connected | ✅ |
+| 4. Google sign-in switched on | ✅ |
+| 5. Admin account added | ✅ |
+| 6. Live on Vercel (https://freshley.vercel.app) | ✅ sign-in confirmed working |
+| 7. Google app published (so **any** customer can sign in) | ☐ see step 7 |
+
 ## 1. Create the Supabase project
 
 1. Sign up at <https://supabase.com> and click **New project**.
@@ -18,7 +30,10 @@ Allow about 20 minutes. Everything here is free.
 
 1. In Supabase, open **SQL Editor** → **New query**.
 2. Paste all of [`supabase/schema.sql`](supabase/schema.sql) and click **Run**.
-   You should see "Success. No rows returned".
+   It ends with a result of **1 row**: that's the ID of the hourly order job
+   it just scheduled, which means it worked. (If Supabase warns about
+   "destructive operations", click **Run this query**. It only replaces old
+   versions of the security rules.)
 3. Open a new query, paste [`supabase/seed-products.sql`](supabase/seed-products.sql)
    and click **Run**. This loads the 42 vegetables and greens.
 
@@ -58,8 +73,10 @@ Allow about 20 minutes. Everything here is free.
 
 ## 5. Make yourself an admin
 
-1. Open the site, click **Log in / Sign up**, sign in with Google, and fill in
-   your details.
+1. Open the site, click **Log in / Sign up** and sign in with Google.
+   **This must happen first:** Supabase only knows an email after it has signed
+   in once. Run step 2 before that and it quietly adds nobody. You can close
+   the details form with ×, because admins don't need customer details.
 2. In Supabase **SQL Editor**, run (with your own Google email):
 
    ```sql
@@ -67,17 +84,60 @@ Allow about 20 minutes. Everything here is free.
    select id from auth.users where email = 'your-google-email@gmail.com';
    ```
 
-3. Reload the site. Your dashboard now shows an **Admin** button, and
-   `/#/admin` opens the staff page.
+3. Reload the site (F5). The navbar now shows an **Admin** button, and
+   `/#/admin` opens the staff page. Admin access is checked when the page
+   loads, so an already-open tab won't notice until you reload it.
 
 Add other staff the same way. Remove someone with
 `delete from public.admins where user_id = (select id from auth.users where email = '…');`
 
+To see who has signed in and who is an admin:
+
+```sql
+select u.email, (a.user_id is not null) as is_admin
+from auth.users u
+left join public.admins a on a.user_id = u.id;
+```
+
+Don't edit emails in Supabase's user list to "move" admin access. Each Google
+account is its own user. Add the new person and remove the old one with the
+two statements above.
+
 ## 6. Go live (Vercel)
 
-In Vercel → your project → **Settings** → **Environment Variables**, add
-`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` with the same values as `.env`,
-then redeploy.
+1. In Vercel → **freshley** → **Settings** → **Environment Variables** → **Add**.
+2. **Type: choose Config**, not Secret. These values aren't secret (every
+   visitor's browser receives them), and with Config you can open them later
+   to check for typos.
+3. The quickest way: copy the two `VITE_…` lines from `.env` and paste them into
+   the **Key** box. Vercel splits them into two variables. Or add them one by one:
+
+   | Key | Value |
+   |---|---|
+   | `VITE_SUPABASE_URL` | the Project URL from `.env` |
+   | `VITE_SUPABASE_ANON_KEY` | the long `eyJ…` key from `.env` |
+
+4. **Environments:** tick **Production** (plus Preview and Development). Save.
+5. **Redeploy:** **Deployments** → top one → **⋯** → **Redeploy** (untick
+   "Use existing build cache"). Variables only reach the site when it's rebuilt.
+6. In Supabase → **Authentication** → **URL Configuration**, set **Site URL**
+   to `https://freshley.vercel.app` and add it under **Redirect URLs** (keep the
+   localhost ones for testing). If you later buy a domain, add it here too.
+
+## 7. Let every customer sign in (publish the Google app)
+
+A new Google app starts in **Testing** mode: only emails listed as testers can
+sign in, and everyone else gets "access denied".
+
+1. **Google Cloud Console** → **APIs & Services** → **OAuth consent screen**
+   (or **Google Auth Platform** → **Audience**).
+2. **Publishing status** → **Publish app** → **Confirm**. It should now say
+   **In production**.
+
+The site only asks Google for name and email, so there's no review. Customers
+will still see "Google hasn't verified this app" (**Advanced** → **Go to …**).
+To remove that notice, request verification (free) once you have your own
+domain and a real privacy-policy page.
 
 ## How orders work
 
@@ -90,6 +150,17 @@ then redeploy.
 - On the admin **Orders** tab, pick a date to see that day's packing list and
   item totals. Move each basket through Scheduled → Packed → Delivered, or
   mark it Skipped.
+
+## Troubleshooting
+
+| What you see | Cause | Fix |
+|---|---|---|
+| "Sign-in isn't switched on yet" on the live site | The Vercel build has no keys | Check step 6 (names spelled exactly, **Production** ticked, type **Config**), then redeploy without build cache |
+| After Google, the page goes to `localhost` and can't connect | Supabase doesn't know the live address | Step 6.6: set Site URL and Redirect URLs |
+| "Access blocked" / "access denied" from Google for customers | Google app still in Testing | Step 7: publish the app |
+| "redirect_uri_mismatch" from Google | Callback address in Google Cloud is wrong | It must be exactly `https://<project-ref>.supabase.co/auth/v1/callback` |
+| An admin gets the customer details form | Their account isn't in `admins` | Run the "who is an admin" query in step 5; re-add them, then reload |
+| Typing `VITE_…=…` in the terminal does nothing useful | Those lines belong in the `.env` **file**, not PowerShell | Open `.env` in VS Code, paste there, save |
 
 ## Free-tier limits worth knowing
 
