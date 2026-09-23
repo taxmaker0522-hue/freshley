@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
-import { allProduce } from '../data/produce'
+import { useProducts } from './useProducts'
 
 const STORAGE_KEY = 'freshley:combo-builder'
 
@@ -15,8 +15,6 @@ const DEFAULT_STATE = {
   deliveryDay: null,
   pincode: '',
 }
-
-const produceById = new Map(allProduce.map((item) => [item.id, item]))
 
 function loadState() {
   if (typeof window === 'undefined') return DEFAULT_STATE
@@ -104,15 +102,24 @@ export function useComboBuilder() {
     return () => clearTimeout(timeout)
   }, [blockedId])
 
+  const { byId } = useProducts()
+
+  // Only products still available count; one the admin switched off drops out.
+  const basket = useMemo(() => {
+    const keep = (ids) => ids.filter((id) => byId.get(id)?.available)
+    return {
+      vegetables: keep(snapshot.vegetables),
+      leafyGreens: keep(snapshot.leafyGreens),
+      deliveryDay: snapshot.deliveryDay,
+    }
+  }, [snapshot, byId])
+
   const selectedItems = useMemo(
-    () =>
-      [...snapshot.vegetables, ...snapshot.leafyGreens]
-        .map((id) => produceById.get(id))
-        .filter(Boolean),
-    [snapshot],
+    () => [...basket.vegetables, ...basket.leafyGreens].map((id) => byId.get(id)),
+    [basket, byId],
   )
 
-  const isComplete = snapshot.vegetables.length >= LIMITS.vegetables.min && Boolean(snapshot.deliveryDay)
+  const isComplete = basket.vegetables.length >= LIMITS.vegetables.min && Boolean(basket.deliveryDay)
 
   // True once the visitor has changed the box from the pre-selected default
   // (curry leaves only), so the mini-cart never appears on a first visit.
@@ -132,6 +139,7 @@ export function useComboBuilder() {
     setDeliveryDay,
     setPincode,
     blockedId,
+    basket,
     selectedItems,
     isComplete,
     hasPicks,

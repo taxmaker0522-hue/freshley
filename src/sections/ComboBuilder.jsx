@@ -6,7 +6,8 @@ import ProduceGlyph from '../components/ProduceGlyph'
 import { Reveal } from '../components/Reveal'
 import Section from '../components/Section'
 import { monthlyPlan } from '../data/plans'
-import { vegetableCategories, vegetables, leafyGreens } from '../data/produce'
+import { vegetableCategories } from '../data/produce'
+import { useProducts } from '../hooks/useProducts'
 import { presets } from '../data/presets'
 import { cutoffDayFor, delivery } from '../data/site'
 import { buildBoxMessage, waLink } from '../utils/whatsapp'
@@ -15,8 +16,8 @@ import { openAuthSheet, saveSubscription, useAuth } from '../hooks/useAuth'
 import { DASHBOARD_HASH, goTo } from '../hooks/useRoute'
 
 const TABS = [
-  { id: 'vegetables', label: 'Vegetables', shortLabel: 'Veg', data: vegetables },
-  { id: 'leafyGreens', label: 'Leafy greens & herbs', shortLabel: 'Greens', data: leafyGreens },
+  { id: 'vegetables', label: 'Vegetables', shortLabel: 'Veg' },
+  { id: 'leafyGreens', label: 'Leafy greens & herbs', shortLabel: 'Greens' },
 ]
 
 const currency = new Intl.NumberFormat('en-IN')
@@ -25,17 +26,23 @@ function SummaryContent({ combo }) {
   const { selectedItems, state, toggleItem, setDeliveryDay, isComplete } = combo
   const { customer, subscription } = useAuth()
 
-  function subscribe() {
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState(null)
+
+  async function subscribe() {
     if (!isComplete) return
     if (!customer) {
-      openAuthSheet({ mode: 'signup', intent: 'subscribe' })
+      openAuthSheet({ intent: 'subscribe' })
       return
     }
-    saveSubscription({
-      vegetables: state.vegetables,
-      leafyGreens: state.leafyGreens,
-      deliveryDay: state.deliveryDay,
-    })
+    setSaving(true)
+    setSaveError(null)
+    const failed = await saveSubscription(combo.basket)
+    setSaving(false)
+    if (failed) {
+      setSaveError(failed)
+      return
+    }
     goTo(DASHBOARD_HASH)
     window.scrollTo({ top: 0 })
   }
@@ -129,15 +136,20 @@ function SummaryContent({ combo }) {
       </div>
 
       <div>
-        <Button onClick={subscribe} disabled={!isComplete} className="w-full">
-          {subscription ? 'Update my subscription' : 'Subscribe to this basket'}
+        <Button onClick={subscribe} disabled={!isComplete || saving} className="w-full">
+          {saving ? 'Saving…' : subscription ? 'Update my subscription' : 'Subscribe to this basket'}
         </Button>
+        {saveError && (
+          <p role="alert" className="mt-2 text-center text-sm text-error">
+            {saveError}
+          </p>
+        )}
         <p className="mt-2 text-center text-sm text-secondary">
           {!isComplete
             ? 'Pick at least 1 vegetable and a delivery day to continue.'
             : customer
               ? 'Saves this basket to your account.'
-              : 'Your picks stay saved while you log in or sign up.'}
+              : 'Your picks stay saved while you sign in.'}
         </p>
         {isComplete && (
           <p className="mt-1 text-center text-sm">
@@ -162,10 +174,11 @@ function ComboBuilder() {
   const [category, setCategory] = useState(vegetableCategories[0].id)
   const reduceMotion = useReducedMotion()
 
-  const currentTab = TABS.find((tab) => tab.id === activeTab)
+  const products = useProducts()
+  const tabItems = products[activeTab]
   const visibleItems =
-    activeTab === 'vegetables' ? currentTab.data.filter((item) => item.category === category) : currentTab.data
-  const pickedIn = (id) => vegetables.filter((v) => v.category === id && combo.state.vegetables.includes(v.id)).length
+    activeTab === 'vegetables' ? tabItems.filter((item) => item.category === category) : tabItems
+  const pickedIn = (id) => products.vegetables.filter((v) => v.category === id && combo.state.vegetables.includes(v.id)).length
   const currentCount = combo.state[activeTab].length
   const currentLimit = LIMITS[activeTab]
   const limitReached = currentCount >= currentLimit.max

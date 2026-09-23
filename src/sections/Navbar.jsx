@@ -73,7 +73,7 @@ function AccountButton({ onNavigate }) {
       size="sm"
       onClick={() => {
         onNavigate?.()
-        openAuthSheet({ mode: 'login' })
+        openAuthSheet({ intent: 'account' })
       }}
       className="px-3 sm:px-4"
     >

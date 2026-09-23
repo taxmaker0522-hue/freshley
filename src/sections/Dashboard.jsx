@@ -3,41 +3,23 @@ import { motion, useReducedMotion } from 'motion/react'
 import Button from '../components/Button'
 import ProduceGlyph from '../components/ProduceGlyph'
 import ProfileFields from '../components/ProfileFields'
+import { ORDER_STATUS } from '../data/orders'
 import { monthlyPlan } from '../data/plans'
-import { allProduce } from '../data/produce'
 import { delivery } from '../data/site'
-import { logOut, openAuthSheet, patchSubscription, saveSubscription, updateProfile, useAuth } from '../hooks/useAuth'
+import { logOut, openAuthSheet, patchSubscription, saveProfile, saveSubscription, useAuth } from '../hooks/useAuth'
 import { useComboBuilder } from '../hooks/useComboBuilder'
+import { useProducts } from '../hooks/useProducts'
 import { goTo } from '../hooks/useRoute'
+import { cutoffFor, formatDate, nextDelivery, toISODate } from '../utils/dates'
 import { cleanProfile, validateProfile } from '../utils/profile'
-import { buildSubscriptionMessage, waLink } from '../utils/whatsapp'
 
 const currency = new Intl.NumberFormat('en-IN')
-const dateFormat = new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })
-const produceById = new Map(allProduce.map((item) => [item.id, item]))
 
 const card = 'rounded-2xl border border-leaf/15 bg-surface p-6 shadow-soft'
 
-// The next delivery on `day` that can still be changed: picks lock at 12 pm
-// the day before, so a delivery whose cutoff has passed is skipped.
-function nextDelivery(day, now = new Date()) {
-  const jsDay = (delivery.days.indexOf(day) + 1) % 7
-  for (let offset = 0; offset <= 7; offset += 1) {
-    const date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset)
-    if (date.getDay() !== jsDay) continue
-    const cutoff = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1, 12)
-    if (now < cutoff) return { date, cutoff }
-  }
-  return null
-}
-
-function basketItems(basket) {
-  return [...basket.vegetables, ...basket.leafyGreens].map((id) => produceById.get(id)).filter(Boolean)
-}
-
-function editInBuilder(combo, basket) {
-  combo.loadBasket(basket)
-  goTo('#combo-builder')
+function useBasketItems(basket) {
+  const { byId } = useProducts()
+  return [...basket.vegetables, ...basket.leafyGreens].map((id) => byId.get(id)).filter(Boolean)
 }
 
 function CardTitle({ children, action }) {
@@ -62,55 +44,34 @@ function ItemList({ items }) {
   )
 }
 
-function WhatsAppConfirm({ customer, subscription, items }) {
-  const sent = subscription.whatsappSentAt
-  const changedSinceSent = sent && subscription.updatedAt > sent
-
-  if (sent && !changedSinceSent) {
-    return (
-      <p className="text-sm text-secondary">
-        Sent to Freshley on WhatsApp.{' '}
-        <a
-          href={waLink(buildSubscriptionMessage(customer, subscription, items))}
-          target="_blank"
-          rel="noreferrer noopener"
-          onClick={() => patchSubscription({ whatsappSentAt: new Date().toISOString() })}
-          className="inline-flex min-h-11 items-center font-semibold text-leaf hover:underline"
-        >
-          Send again
-        </a>
-      </p>
-    )
-  }
-
+function ErrorNote({ children }) {
+  if (!children) return null
   return (
-    <div className="rounded-2xl border border-tomato/30 bg-tomato/5 p-4">
-      <p className="text-sm font-semibold text-soil">
-        {changedSinceSent ? 'You changed your subscription' : 'Last step: send it to us'}
-      </p>
-      <p className="mt-1 text-sm text-secondary">
-        {changedSinceSent
-          ? 'Send the update on WhatsApp so your next basket matches.'
-          : 'Send your subscription on WhatsApp so we can schedule your first basket.'}
-      </p>
-      <Button
-        href={waLink(buildSubscriptionMessage(customer, subscription, items))}
-        target="_blank"
-        rel="noreferrer noopener"
-        onClick={() => patchSubscription({ whatsappSentAt: new Date().toISOString() })}
-        size="sm"
-        className="mt-3 w-full sm:w-auto"
-      >
-        Send on WhatsApp
-      </Button>
-    </div>
+    <p role="alert" className="text-sm text-error">
+      {children}
+    </p>
   )
 }
 
-function SubscriptionCard({ customer, subscription, combo }) {
-  const items = basketItems(subscription)
+// Runs an async account action with a busy flag and an error message.
+function useAction() {
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState(null)
+  async function run(action) {
+    setBusy(true)
+    setError(null)
+    const failed = await action()
+    setBusy(false)
+    if (failed) setError(failed)
+  }
+  return { busy, error, run }
+}
+
+function SubscriptionCard({ subscription, combo }) {
+  const items = useBasketItems(subscription)
   const paused = subscription.status === 'paused'
   const next = nextDelivery(subscription.deliveryDay)
+  const { busy, error, run } = useAction()
 
   return (
     <div className={`${card} flex flex-col gap-6`}>
@@ -132,14 +93,14 @@ function SubscriptionCard({ customer, subscription, combo }) {
         <div>
           <dt className="text-xs font-semibold uppercase tracking-wide text-secondary">Next basket</dt>
           <dd className="mt-1 font-heading text-lg font-semibold text-soil">
-            {paused ? 'On hold' : next ? dateFormat.format(next.date) : '—'}
+            {paused ? 'On hold' : next ? formatDate(next.date) : '—'}
           </dd>
           {!paused && <dd className="text-sm text-secondary">{delivery.time}</dd>}
         </div>
         <div>
           <dt className="text-xs font-semibold uppercase tracking-wide text-secondary">Change picks until</dt>
           <dd className="mt-1 font-heading text-lg font-semibold text-soil">
-            {paused || !next ? '—' : `${dateFormat.format(next.cutoff)}, 12 pm`}
+            {paused || !next ? '—' : `${formatDate(next.cutoff)}, 12 pm`}
           </dd>
         </div>
         <div>
@@ -163,7 +124,8 @@ function SubscriptionCard({ customer, subscription, combo }) {
               role="radio"
               aria-checked={subscription.deliveryDay === day}
               aria-label={day}
-              onClick={() => patchSubscription({ deliveryDay: day, updatedAt: new Date().toISOString() })}
+              disabled={busy}
+              onClick={() => run(() => patchSubscription({ deliveryDay: day }))}
             >
               {day.slice(0, 3)}
             </Button>
@@ -174,12 +136,19 @@ function SubscriptionCard({ customer, subscription, combo }) {
       <div>
         <CardTitle
           action={
-            <Button variant="ghost" size="sm" onClick={() => editInBuilder(combo, subscription)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                combo.loadBasket(subscription)
+                goTo('#combo-builder')
+              }}
+            >
               Edit basket
             </Button>
           }
         >
-          <span className="text-lg">This week&rsquo;s basket</span>
+          <span className="text-lg">Your weekly basket</span>
         </CardTitle>
         <p className="text-sm text-secondary">
           {items.length} {items.length === 1 ? 'item' : 'items'}
@@ -187,15 +156,12 @@ function SubscriptionCard({ customer, subscription, combo }) {
         <ItemList items={items} />
       </div>
 
-      <WhatsAppConfirm customer={customer} subscription={subscription} items={items} />
-
       <div className="border-t border-leaf/15 pt-4">
         <Button
           variant="secondary"
           size="sm"
-          onClick={() =>
-            patchSubscription({ status: paused ? 'active' : 'paused', updatedAt: new Date().toISOString() })
-          }
+          disabled={busy}
+          onClick={() => run(() => patchSubscription({ status: paused ? 'active' : 'paused' }))}
         >
           {paused ? 'Resume deliveries' : 'Pause deliveries'}
         </Button>
@@ -204,14 +170,73 @@ function SubscriptionCard({ customer, subscription, combo }) {
             ? 'No baskets are delivered while paused.'
             : 'Travelling? Pause any time and resume when you’re back.'}
         </p>
+        <ErrorNote>{error}</ErrorNote>
       </div>
     </div>
   )
 }
 
+function OrderRow({ order }) {
+  const items = useBasketItems(order)
+  const status = ORDER_STATUS[order.status]
+  const editable = order.status === 'scheduled' && new Date() < cutoffFor(order.deliveryDate)
+
+  return (
+    <li className="flex flex-col gap-2 py-4">
+      <div className="flex items-center justify-between gap-4">
+        <p className="font-heading text-lg font-semibold text-soil">{formatDate(order.deliveryDate)}</p>
+        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${status.className}`}>{status.label}</span>
+      </div>
+      <p className="text-sm text-secondary">{items.map((item) => item.name).join(', ')}</p>
+      {editable && (
+        <p className="text-sm text-muted">You can change this basket until {formatDate(cutoffFor(order.deliveryDate))}, 12 pm.</p>
+      )}
+    </li>
+  )
+}
+
+function OrdersCard({ orders }) {
+  const today = toISODate(new Date())
+  const upcoming = orders.filter((order) => order.deliveryDate >= today).reverse()
+  const past = orders.filter((order) => order.deliveryDate < today)
+
+  return (
+    <div className={`${card} flex flex-col gap-2`}>
+      <CardTitle>My orders</CardTitle>
+      {orders.length === 0 ? (
+        <p className="mt-2 text-sm text-secondary">Your weekly baskets will be listed here once you subscribe.</p>
+      ) : (
+        <>
+          {upcoming.length > 0 && (
+            <>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-secondary">Upcoming</p>
+              <ul className="divide-y divide-leaf/10">
+                {upcoming.map((order) => (
+                  <OrderRow key={order.id} order={order} />
+                ))}
+              </ul>
+            </>
+          )}
+          {past.length > 0 && (
+            <>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-secondary">Past baskets</p>
+              <ul className="divide-y divide-leaf/10">
+                {past.map((order) => (
+                  <OrderRow key={order.id} order={order} />
+                ))}
+              </ul>
+            </>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
 function NoSubscriptionCard({ combo }) {
-  const draft = basketItems(combo.state)
+  const draft = combo.selectedItems
   const hasDraft = combo.hasPicks && draft.length > 0
+  const { busy, error, run } = useAction()
 
   return (
     <div className={`${card} flex flex-col gap-4`}>
@@ -226,22 +251,15 @@ function NoSubscriptionCard({ combo }) {
           <ItemList items={draft} />
           <div className="mt-2 flex flex-col gap-3 sm:flex-row">
             {combo.isComplete && (
-              <Button
-                onClick={() =>
-                  saveSubscription({
-                    vegetables: combo.state.vegetables,
-                    leafyGreens: combo.state.leafyGreens,
-                    deliveryDay: combo.state.deliveryDay,
-                  })
-                }
-              >
-                Subscribe to this basket
+              <Button disabled={busy} onClick={() => run(() => saveSubscription(combo.basket))}>
+                {busy ? 'Saving…' : 'Subscribe to this basket'}
               </Button>
             )}
             <Button variant="secondary" href="#combo-builder">
               Edit basket
             </Button>
           </div>
+          <ErrorNote>{error}</ErrorNote>
         </>
       ) : (
         <>
@@ -262,31 +280,34 @@ function ProfileCard({ customer }) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(customer)
   const [errors, setErrors] = useState({})
+  const { busy, error, run } = useAction()
   const { address } = customer
 
   function handleSave(event) {
     event.preventDefault()
-    const found = validateProfile(draft, { withMobile: false })
+    const form = event.currentTarget
+    const found = validateProfile(draft)
     setErrors(found)
     if (Object.keys(found).length > 0) {
-      event.currentTarget.querySelector('[aria-invalid="true"]')?.focus()
+      form.querySelector('[aria-invalid="true"]')?.focus()
       return
     }
-    updateProfile(cleanProfile(draft))
-    setEditing(false)
+    run(async () => {
+      const failed = await saveProfile(cleanProfile(draft))
+      if (!failed) setEditing(false)
+      return failed
+    })
   }
 
   if (editing) {
     return (
       <form onSubmit={handleSave} noValidate className={`${card} flex flex-col gap-6`}>
         <CardTitle>Edit details</CardTitle>
-        <p className="text-sm text-secondary">
-          Mobile number: <span className="font-medium text-soil">+91 {customer.mobile}</span>
-        </p>
-        <ProfileFields idPrefix="profile" profile={draft} onChange={setDraft} errors={errors} showMobile={false} />
+        <ProfileFields idPrefix="profile" profile={draft} onChange={setDraft} errors={errors} />
+        <ErrorNote>{error}</ErrorNote>
         <div className="flex gap-3">
-          <Button type="submit" size="sm">
-            Save
+          <Button type="submit" size="sm" disabled={busy}>
+            {busy ? 'Saving…' : 'Save'}
           </Button>
           <Button
             variant="secondary"
@@ -348,29 +369,42 @@ function ProfileCard({ customer }) {
   )
 }
 
+function Prompt({ title, text, children }) {
+  return (
+    <section className="mx-auto max-w-md px-4 py-16 text-center sm:px-6">
+      <h1 className="font-heading text-3xl font-semibold text-soil">{title}</h1>
+      <p className="mt-3 text-secondary">{text}</p>
+      {children && <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">{children}</div>}
+    </section>
+  )
+}
+
 function Dashboard() {
-  const { customer, subscription } = useAuth()
+  const { status, customer, subscription, orders, isAdmin } = useAuth()
   const combo = useComboBuilder()
   const reduceMotion = useReducedMotion()
+
+  if (status === 'loading') return <Prompt title="Your Freshley account" text="Loading your account…" />
+
+  if (status === 'signedOut' || status === 'unconfigured') {
+    return (
+      <Prompt title="Your Freshley account" text="Sign in to see your weekly basket, delivery day and orders.">
+        <Button onClick={() => openAuthSheet({ intent: 'account' })}>Sign in</Button>
+      </Prompt>
+    )
+  }
+
+  if (status === 'needsProfile') {
+    return (
+      <Prompt title="Add your delivery details" text="We need your mobile number and address before your first basket.">
+        <Button onClick={() => openAuthSheet({ intent: 'account' })}>Add details</Button>
+      </Prompt>
+    )
+  }
 
   const enter = reduceMotion
     ? {}
     : { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
-
-  if (!customer) {
-    return (
-      <section className="mx-auto max-w-md px-4 py-16 text-center sm:px-6">
-        <h1 className="font-heading text-3xl font-semibold text-soil">Your Freshley account</h1>
-        <p className="mt-3 text-secondary">Log in to see your weekly basket and delivery day.</p>
-        <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-          <Button onClick={() => openAuthSheet({ mode: 'login' })}>Log in</Button>
-          <Button variant="secondary" onClick={() => openAuthSheet({ mode: 'signup' })}>
-            Sign up
-          </Button>
-        </div>
-      </section>
-    )
-  }
 
   return (
     <section className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-16 lg:pt-12">
@@ -381,16 +415,23 @@ function Dashboard() {
             Namaste, {customer.name.split(' ')[0]}
           </h1>
         </div>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => {
-            logOut()
-            goTo('#top')
-          }}
-        >
-          Log out
-        </Button>
+        <div className="flex gap-3">
+          {isAdmin && (
+            <Button variant="ghost" size="sm" href="#/admin">
+              Admin
+            </Button>
+          )}
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={async () => {
+              await logOut()
+              goTo('#top')
+            }}
+          >
+            Log out
+          </Button>
+        </div>
       </motion.div>
 
       <motion.div
@@ -398,12 +439,13 @@ function Dashboard() {
         transition={reduceMotion ? undefined : { ...enter.transition, delay: 0.08 }}
         className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start"
       >
-        <div className="lg:col-span-2">
+        <div className="flex flex-col gap-6 lg:col-span-2">
           {subscription ? (
-            <SubscriptionCard customer={customer} subscription={subscription} combo={combo} />
+            <SubscriptionCard subscription={subscription} combo={combo} />
           ) : (
             <NoSubscriptionCard combo={combo} />
           )}
+          <OrdersCard orders={orders} />
         </div>
         <ProfileCard customer={customer} />
       </motion.div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { Suspense, lazy, useEffect, useRef } from 'react'
 import AuthSheet from './components/AuthSheet'
 import MiniCartBar from './components/MiniCartBar'
 import WhatsAppButton from './components/WhatsAppButton'
@@ -15,6 +15,9 @@ import Testimonials from './sections/Testimonials'
 import FAQ from './sections/FAQ'
 import Footer from './sections/Footer'
 import Dashboard from './sections/Dashboard'
+
+// Staff-only page: kept out of the main bundle customers download.
+const Admin = lazy(() => import('./sections/Admin'))
 
 function App() {
   const route = useRoute()
@@ -36,6 +39,12 @@ function App() {
       {route === 'dashboard' ? (
         <main>
           <Dashboard />
+        </main>
+      ) : route === 'admin' ? (
+        <main>
+          <Suspense fallback={<p className="px-4 py-16 text-center text-secondary">Loading…</p>}>
+            <Admin />
+          </Suspense>
         </main>
       ) : (
         <main>
