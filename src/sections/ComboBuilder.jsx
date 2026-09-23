@@ -11,6 +11,8 @@ import { presets } from '../data/presets'
 import { cutoffDayFor, delivery } from '../data/site'
 import { buildBoxMessage, waLink } from '../utils/whatsapp'
 import { LIMITS, useComboBuilder } from '../hooks/useComboBuilder'
+import { openAuthSheet, saveSubscription, useAuth } from '../hooks/useAuth'
+import { DASHBOARD_HASH, goTo } from '../hooks/useRoute'
 
 const TABS = [
   { id: 'vegetables', label: 'Vegetables', shortLabel: 'Veg', data: vegetables },
@@ -21,6 +23,22 @@ const currency = new Intl.NumberFormat('en-IN')
 
 function SummaryContent({ combo }) {
   const { selectedItems, state, toggleItem, setDeliveryDay, isComplete } = combo
+  const { customer, subscription } = useAuth()
+
+  function subscribe() {
+    if (!isComplete) return
+    if (!customer) {
+      openAuthSheet({ mode: 'signup', intent: 'subscribe' })
+      return
+    }
+    saveSubscription({
+      vegetables: state.vegetables,
+      leafyGreens: state.leafyGreens,
+      deliveryDay: state.deliveryDay,
+    })
+    goTo(DASHBOARD_HASH)
+    window.scrollTo({ top: 0 })
+  }
 
   const categoryOf = (id) => (state.vegetables.includes(id) ? 'vegetables' : 'leafyGreens')
 
@@ -111,20 +129,28 @@ function SummaryContent({ combo }) {
       </div>
 
       <div>
-        <Button
-          href={isComplete ? waLink(buildBoxMessage(combo)) : undefined}
-          target={isComplete ? '_blank' : undefined}
-          rel="noreferrer noopener"
-          aria-disabled={!isComplete}
-          className="w-full"
-        >
-          Subscribe to this basket
+        <Button onClick={subscribe} disabled={!isComplete} className="w-full">
+          {subscription ? 'Update my subscription' : 'Subscribe to this basket'}
         </Button>
         <p className="mt-2 text-center text-sm text-secondary">
-          {isComplete
-            ? 'Opens WhatsApp with your basket details filled in.'
-            : 'Pick at least 1 vegetable and a delivery day to continue.'}
+          {!isComplete
+            ? 'Pick at least 1 vegetable and a delivery day to continue.'
+            : customer
+              ? 'Saves this basket to your account.'
+              : 'Your picks stay saved while you log in or sign up.'}
         </p>
+        {isComplete && (
+          <p className="mt-1 text-center text-sm">
+            <a
+              href={waLink(buildBoxMessage(combo))}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="inline-flex min-h-11 items-center font-semibold text-leaf hover:underline"
+            >
+              Or send this basket on WhatsApp
+            </a>
+          </p>
+        )}
       </div>
     </div>
   )

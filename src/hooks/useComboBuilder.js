@@ -76,6 +76,16 @@ function applyPreset(preset) {
   })
 }
 
+// Puts a saved subscription basket back into the builder for editing.
+function loadBasket(basket) {
+  setState({
+    ...state,
+    vegetables: basket.vegetables,
+    leafyGreens: basket.leafyGreens,
+    deliveryDay: basket.deliveryDay,
+  })
+}
+
 function setDeliveryDay(day) {
   setState({ ...state, deliveryDay: day })
 }
@@ -118,6 +128,7 @@ export function useComboBuilder() {
       if (toggleItem(category, id)) setBlockedId(id)
     },
     applyPreset,
+    loadBasket,
     setDeliveryDay,
     setPincode,
     blockedId,

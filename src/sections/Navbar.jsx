@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Button from '../components/Button'
 import { liveFarms } from '../data/farms'
+import { openAuthSheet, useAuth } from '../hooks/useAuth'
+import { DASHBOARD_HASH } from '../hooks/useRoute'
 
 const links = [
   { label: 'Build your basket', href: '#combo-builder' },
@@ -32,6 +34,52 @@ function Logo() {
         Freshley
       </span>
     </a>
+  )
+}
+
+function UserIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" {...props}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" />
+    </svg>
+  )
+}
+
+// Logged out: opens the login / sign-up sheet. Logged in: goes to the dashboard.
+function AccountButton({ onNavigate }) {
+  const { customer } = useAuth()
+
+  if (customer) {
+    const firstName = customer.name.split(' ')[0]
+    return (
+      <a
+        href={DASHBOARD_HASH}
+        onClick={onNavigate}
+        aria-label={`My account (${firstName})`}
+        className="flex min-h-11 items-center gap-2 rounded-full border border-leaf/25 bg-surface px-2 text-sm font-semibold text-leaf transition-colors hover:border-leaf sm:pr-4"
+      >
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-leaf font-heading text-base text-cream">
+          {firstName.charAt(0).toUpperCase()}
+        </span>
+        <span className="hidden max-w-32 truncate sm:inline">Hi, {firstName}</span>
+      </a>
+    )
+  }
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={() => {
+        onNavigate?.()
+        openAuthSheet({ mode: 'login' })
+      }}
+      className="px-3 sm:px-4"
+    >
+      <UserIcon className="hidden h-4 w-4 sm:block" aria-hidden="true" />
+      Log in / Sign up
+    </Button>
   )
 }
 
@@ -76,35 +124,41 @@ function Navbar() {
           ))}
         </nav>
 
-        <Button href="#plans" size="sm" className="hidden md:inline-flex">
-          Start subscription
-        </Button>
-
-        <button
-          type="button"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          onClick={() => setOpen((value) => !value)}
-          className="flex h-11 w-11 items-center justify-center rounded-2xl text-soil md:hidden"
-        >
-          <span className="relative block h-4 w-6">
-            <motion.span
-              className="absolute left-0 top-0 h-0.5 w-6 rounded-full bg-soil"
-              animate={{ rotate: open ? 45 : 0, y: open ? 7 : 0 }}
-              transition={{ duration: reduceMotion ? 0 : 0.2 }}
-            />
-            <motion.span
-              className="absolute left-0 top-1/2 h-0.5 w-6 -translate-y-1/2 rounded-full bg-soil"
-              animate={{ opacity: open ? 0 : 1 }}
-              transition={{ duration: reduceMotion ? 0 : 0.15 }}
-            />
-            <motion.span
-              className="absolute bottom-0 left-0 h-0.5 w-6 rounded-full bg-soil"
-              animate={{ rotate: open ? -45 : 0, y: open ? -7 : 0 }}
-              transition={{ duration: reduceMotion ? 0 : 0.2 }}
-            />
+        <div className="flex items-center gap-2 md:gap-3">
+          <AccountButton onNavigate={() => setOpen(false)} />
+          {/* Wrapped: Button's own inline-flex would override a `hidden` class. */}
+          <span className="hidden lg:block">
+            <Button href="#plans" size="sm">
+              Start subscription
+            </Button>
           </span>
-        </button>
+
+          <button
+            type="button"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            onClick={() => setOpen((value) => !value)}
+            className="flex h-11 w-11 items-center justify-center rounded-2xl text-soil md:hidden"
+          >
+            <span className="relative block h-4 w-6">
+              <motion.span
+                className="absolute left-0 top-0 h-0.5 w-6 rounded-full bg-soil"
+                animate={{ rotate: open ? 45 : 0, y: open ? 7 : 0 }}
+                transition={{ duration: reduceMotion ? 0 : 0.2 }}
+              />
+              <motion.span
+                className="absolute left-0 top-1/2 h-0.5 w-6 -translate-y-1/2 rounded-full bg-soil"
+                animate={{ opacity: open ? 0 : 1 }}
+                transition={{ duration: reduceMotion ? 0 : 0.15 }}
+              />
+              <motion.span
+                className="absolute bottom-0 left-0 h-0.5 w-6 rounded-full bg-soil"
+                animate={{ rotate: open ? -45 : 0, y: open ? -7 : 0 }}
+                transition={{ duration: reduceMotion ? 0 : 0.2 }}
+              />
+            </span>
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
