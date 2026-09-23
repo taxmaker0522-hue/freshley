@@ -120,14 +120,16 @@ function AuthSheet() {
 
   // Sign-in finished (returning from Google, or profile just saved): do what the
   // visitor was trying to do.
-  const { status } = auth
+  const { status, isAdmin } = auth
   const { basket, isComplete } = combo
   useEffect(() => {
-    if (status !== 'ready') return
+    // Staff without customer details count as signed in: they go to #/admin.
+    const staffOnly = status === 'needsProfile' && isAdmin
+    if (status !== 'ready' && !staffOnly) return
     const pending = takePendingIntent() || (sheet.open ? sheet.intent : null)
     if (sheet.open) closeAuthSheet()
     if (!pending) return
-    if (pending === 'admin') {
+    if (pending === 'admin' || staffOnly) {
       goTo(ADMIN_HASH)
       return
     }

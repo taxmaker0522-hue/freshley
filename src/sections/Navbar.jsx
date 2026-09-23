@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Button from '../components/Button'
 import { liveFarms } from '../data/farms'
 import { openAuthSheet, useAuth } from '../hooks/useAuth'
-import { DASHBOARD_HASH } from '../hooks/useRoute'
+import { ADMIN_HASH, DASHBOARD_HASH } from '../hooks/useRoute'
 
 const links = [
   { label: 'Build your basket', href: '#combo-builder' },
@@ -48,7 +48,16 @@ function UserIcon(props) {
 
 // Logged out: opens the login / sign-up sheet. Logged in: goes to the dashboard.
 function AccountButton({ onNavigate }) {
-  const { customer } = useAuth()
+  const { customer, isAdmin } = useAuth()
+
+  // Staff don't need customer details; send them straight to the admin page.
+  if (!customer && isAdmin) {
+    return (
+      <Button variant="ghost" size="sm" href={ADMIN_HASH} onClick={onNavigate}>
+        Admin
+      </Button>
+    )
+  }
 
   if (customer) {
     const firstName = customer.name.split(' ')[0]
