@@ -34,6 +34,7 @@ Allow about 20 minutes. Everything here is free.
 | 6. Live on Vercel (https://freshley.vercel.app) | ✅ sign-in confirmed working |
 | 7. Custom domain bobobay.com | ✅ DNS live, Vercel serving the site — finish step 7 below |
 | 8. Google app published (so **any** customer can sign in) | ☐ see step 8 |
+| 9. Google Search Console (`bobobay.com` verified + sitemap submitted) | ☐ see step 9 |
 
 ## 1. Create the Supabase project
 
@@ -173,6 +174,30 @@ The site only asks Google for name and email, so there's no review. Customers
 will still see "Google hasn't verified this app" (**Advanced** → **Go to …**).
 To remove that notice, request verification (free) once you have your own
 domain and a real privacy-policy page.
+
+## 9. Google Search Console (so the site shows up in Google Search)
+
+This is separate from Google sign-in — it's a different Google product, for
+checking how Google's crawler sees the site and submitting it to be indexed.
+It was never set up before; that's why you couldn't find "Freshley" in it.
+
+1. <https://search.google.com/search-console>, signed in with whichever
+   Google account you want to own this (doesn't have to match the one used
+   for the domain or Supabase).
+2. **Add property** → **Domain** → type `bobobay.com` (the **Domain** type
+   covers `www.bobobay.com` and both http/https in one go; the alternative
+   **URL prefix** type would need a separate property for each).
+3. Google shows a **TXT record** to add. Add it wherever you added the
+   Vercel A/CNAME records for `bobobay.com` (your domain registrar's DNS
+   settings), then click **Verify** in Search Console. DNS TXT records
+   usually work within minutes, sometimes up to an hour.
+4. Once verified, **Sitemaps** (left menu) → submit `sitemap.xml`. The site
+   now has `public/robots.txt` and `public/sitemap.xml` (added 28 Sep 2026;
+   the sitemap only lists the homepage for now — the legal pages aren't
+   built yet, see `TODO-content.md`).
+
+Being verified and having a sitemap doesn't make Google index the site
+instantly — that can take days to weeks for a new domain.
 
 ## How orders work
 

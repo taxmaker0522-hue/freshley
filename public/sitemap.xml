@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Only the homepage for now - /#/dashboard and /#/admin are account pages,
+     not public content, and the legal pages aren't built yet (see
+     TODO-content.md). Add more <url> entries here once they exist. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://bobobay.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
