@@ -1,4 +1,4 @@
-# Freshley
+# Bobobay
 
 Monthly subscription with a weekly home delivery of fresh vegetables and leafy greens. The box is chosen weekly (up to 8 vegetables, 5 greens); each customer picks a weekly delivery day (any day); they order/change by 12 pm the day before and it arrives next morning, before 7 am (`delivery` in `src/data/site.js`). Wording rule: vegetables are "harvested at fresh water sources" and "hand-graded & sorted" — never "washed". No fruits, no "organic" or "pesticide" claims.
 

@@ -23,15 +23,15 @@ export function cutoffDayFor(day) {
 // Single place for the rest of the business details. Values marked PLACEHOLDER
 // must be replaced before launch — each one is listed in TODO-content.md.
 export const site = {
-  name: 'Freshley',
+  name: 'Bobobay',
   phone: { display: '+91 90000 00000', tel: '+919000000000' }, // PLACEHOLDER
-  email: 'hello@freshley.in', // PLACEHOLDER
+  email: 'hello@bobobay.com', // PLACEHOLDER
   // Your 14-digit FSSAI licence number. Leave '' and the footer badge stays hidden.
   fssaiLicence: '',
   social: {
-    instagram: 'https://instagram.com/freshley.in', // PLACEHOLDER
-    facebook: 'https://facebook.com/freshley.in', // PLACEHOLDER
-    x: 'https://x.com/freshley_in', // PLACEHOLDER
+    instagram: 'https://instagram.com/bobobay.in', // PLACEHOLDER
+    facebook: 'https://facebook.com/bobobay.in', // PLACEHOLDER
+    x: 'https://x.com/bobobay_in', // PLACEHOLDER
   },
   legal: {
     privacy: '#', // PLACEHOLDER — needs a real page

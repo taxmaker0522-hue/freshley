@@ -162,7 +162,7 @@ function AuthSheet() {
 
   const subscribing = intent === 'subscribe' && combo.isComplete
   const itemCount = combo.selectedItems.length
-  const title = needsProfile ? 'Almost there' : subscribing ? 'One step to subscribe' : 'Welcome to Freshley'
+  const title = needsProfile ? 'Almost there' : subscribing ? 'One step to subscribe' : 'Welcome to Bobobay'
   const intro = needsProfile
     ? 'Where should we deliver your basket?'
     : subscribing

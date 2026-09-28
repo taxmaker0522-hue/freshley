@@ -1,4 +1,4 @@
-# Freshley
+# Bobobay
 
 Monthly subscription with a weekly home delivery of fresh vegetables and leafy greens (box chosen weekly, delivery day of the customer's choice; order by 12 pm the day before, delivered next morning before 7 am). Built for urban Indian families, mobile-first.
 

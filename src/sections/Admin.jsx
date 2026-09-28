@@ -456,22 +456,22 @@ function Admin() {
   const [tab, setTab] = useState('orders')
   const reduceMotion = useReducedMotion()
 
-  if (status === 'loading') return <Prompt title="Freshley admin" text="Checking your access…" />
+  if (status === 'loading') return <Prompt title="Bobobay admin" text="Checking your access…" />
   if (status === 'signedOut' || status === 'unconfigured') {
     return (
-      <Prompt title="Freshley admin" text="Sign in with your staff Google account.">
+      <Prompt title="Bobobay admin" text="Sign in with your staff Google account.">
         <Button onClick={() => openAuthSheet({ intent: 'admin' })}>Sign in</Button>
       </Prompt>
     )
   }
   if (!isAdmin) {
-    return <Prompt title="Staff only" text="This page is for the Freshley team. Your account doesn’t have admin access." />
+    return <Prompt title="Staff only" text="This page is for the Bobobay team. Your account doesn’t have admin access." />
   }
 
   return (
     <section className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-16 lg:pt-12">
       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-leaf">Staff</p>
-      <h1 className="mt-2 font-heading text-3xl font-semibold text-soil sm:text-4xl">Freshley admin</h1>
+      <h1 className="mt-2 font-heading text-3xl font-semibold text-soil sm:text-4xl">Bobobay admin</h1>
 
       <div role="tablist" aria-label="Admin sections" className="mt-6 flex max-w-md gap-1 rounded-full bg-lime/10 p-1">
         {TABS.map((t) => (

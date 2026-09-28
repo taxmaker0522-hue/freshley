@@ -7,6 +7,21 @@ button says sign-in isn't switched on yet.
 
 Allow about 20 minutes. Everything here is free.
 
+> **On the app being renamed to Bobobay (28 Sep 2026):** the site's visible
+> name, page title and social-preview text now all say "Bobobay". The
+> **Supabase project**, its **Project URL**, the **Vercel project** and the
+> **Google Cloud project** underneath weren't renamed — they still say
+> "freshley" internally, and that's fine, nothing there is customer-facing.
+> Two things still say "Freshley" and need your own action, not code:
+> - The **Google sign-in screen** (OAuth consent screen app name) — rename it
+>   in Google Cloud Console → **APIs & Services** → **OAuth consent screen**
+>   → **Edit app** → **App name**, if you want it to match. A name-only edit
+>   doesn't reset your publish status.
+> - `public/og-image.jpg`, the picture shown when the site is shared on
+>   WhatsApp/Facebook/X — it has "Freshley" drawn into the image itself, plus
+>   an old "100% organic" claim the site's own wording rules don't allow.
+>   Needs a redesign, not a text edit — ask for a new one when you're ready.
+
 ## Status
 
 | Step | Done |
@@ -17,7 +32,8 @@ Allow about 20 minutes. Everything here is free.
 | 4. Google sign-in switched on | ✅ |
 | 5. Admin account added | ✅ |
 | 6. Live on Vercel (https://freshley.vercel.app) | ✅ sign-in confirmed working |
-| 7. Google app published (so **any** customer can sign in) | ☐ see step 7 |
+| 7. Custom domain bobobay.com | ✅ DNS live, Vercel serving the site — finish step 7 below |
+| 8. Google app published (so **any** customer can sign in) | ☐ see step 8 |
 
 ## 1. Create the Supabase project
 
@@ -124,7 +140,26 @@ two statements above.
    to `https://freshley.vercel.app` and add it under **Redirect URLs** (keep the
    localhost ones for testing). If you later buy a domain, add it here too.
 
-## 7. Let every customer sign in (publish the Google app)
+## 7. Custom domain: bobobay.com
+
+`bobobay.com` already resolves to this Vercel project and serves the site
+correctly over HTTPS — the DNS/Vercel side is done. Two follow-ups:
+
+1. Supabase → **Authentication** → **URL Configuration**: change **Site
+   URL** to `https://bobobay.com`, and add `https://bobobay.com` (and
+   `https://www.bobobay.com` if that also resolves) under **Redirect
+   URLs**. Keep `https://freshley.vercel.app` and the localhost ones there
+   too — extra entries don't hurt, and it keeps the old link working.
+2. Vercel → your project → **Settings** → **Environment Variables** → add
+   `SITE_URL` = `https://bobobay.com` (**Production**, type Config), then
+   redeploy without build cache. This makes sure WhatsApp/Facebook/X link
+   previews point at `bobobay.com`, not the old `.vercel.app` address.
+
+Vercel → **Settings** → **Domains** is also where you'd set `bobobay.com` as
+the **primary** domain if you want `freshley.vercel.app` to redirect to it
+instead of also serving the site directly — optional, up to you.
+
+## 8. Let every customer sign in (publish the Google app)
 
 A new Google app starts in **Testing** mode: only emails listed as testers can
 sign in, and everyone else gets "access denied".

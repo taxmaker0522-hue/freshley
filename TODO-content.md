@@ -106,9 +106,11 @@ Tick each item off as real data lands.
 
 ## App name
 
-- [ ] Considering a rename from "Freshley". Ideas: Pothu (పొద్దు, "early
-      morning"), Suprabhat, Tellavaru, Dawnbasket, Buttalo, Pachchani. Check the
-      domain, Instagram handle and a trademark search (ipindia.gov.in) before choosing.
+- [x] Renamed from "Freshley" to **Bobobay** (28 Sep 2026) — domain bobobay.com
+      live, site name/title/meta updated everywhere in code.
+- [ ] Still open: Instagram handle, trademark search (ipindia.gov.in), and
+      renaming the Google sign-in screen (see the note near the top of
+      `SETUP-backend.md`) and `public/og-image.jpg`, which still say "Freshley".
 
 ## Images
 

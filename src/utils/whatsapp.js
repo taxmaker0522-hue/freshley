@@ -8,7 +8,7 @@ export function waLink(message) {
 }
 
 export function buildGenericMessage() {
-  return "Hi Freshley! I'd like to know more about your weekly vegetable basket."
+  return "Hi Bobobay! I'd like to know more about your weekly vegetable basket."
 }
 
 export function buildBoxMessage(combo) {
@@ -16,7 +16,7 @@ export function buildBoxMessage(combo) {
   const items = selectedItems.map((item) => `${item.emoji} ${item.name}`).join(', ')
 
   return [
-    "Hi Freshley! I'd like to subscribe to this basket:",
+    "Hi Bobobay! I'd like to subscribe to this basket:",
     items,
     `Delivery: every ${state.deliveryDay}, ${delivery.time}`,
     `Plan: ${monthlyPlan.name} (₹${currency.format(monthlyPlan.basePrice)} a ${monthlyPlan.duration})`,
@@ -26,7 +26,7 @@ export function buildBoxMessage(combo) {
 
 export function buildNotifyMessage(pincode, contact) {
   return [
-    `Hi Freshley! Please let me know when you start delivering to ${pincode}.`,
+    `Hi Bobobay! Please let me know when you start delivering to ${pincode}.`,
     contact ? `Reach me at: ${contact}` : null,
   ]
     .filter(Boolean)

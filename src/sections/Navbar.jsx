@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Button from '../components/Button'
 import { liveFarms } from '../data/farms'
+import { site } from '../data/site'
 import { openAuthSheet, useAuth } from '../hooks/useAuth'
 import { ADMIN_HASH, DASHBOARD_HASH } from '../hooks/useRoute'
 
@@ -31,7 +32,7 @@ function Logo() {
     <a href="#top" className="flex items-center gap-2">
       <LeafMark className="h-8 w-8 text-leaf" />
       <span className="font-heading text-2xl font-semibold tracking-tight text-soil">
-        Freshley
+        {site.name}
       </span>
     </a>
   )

@@ -384,11 +384,11 @@ function Dashboard() {
   const combo = useComboBuilder()
   const reduceMotion = useReducedMotion()
 
-  if (status === 'loading') return <Prompt title="Your Freshley account" text="Loading your account…" />
+  if (status === 'loading') return <Prompt title="Your Bobobay account" text="Loading your account…" />
 
   if (status === 'signedOut' || status === 'unconfigured') {
     return (
-      <Prompt title="Your Freshley account" text="Sign in to see your weekly basket, delivery day and orders.">
+      <Prompt title="Your Bobobay account" text="Sign in to see your weekly basket, delivery day and orders.">
         <Button onClick={() => openAuthSheet({ intent: 'account' })}>Sign in</Button>
       </Prompt>
     )

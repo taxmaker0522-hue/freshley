@@ -1,4 +1,4 @@
--- Freshley database: run once in Supabase → SQL Editor → New query → Run.
+-- Bobobay database: run once in Supabase → SQL Editor → New query → Run.
 -- Safe to re-run: every statement is idempotent.
 -- Then run supabase/seed-products.sql to load the vegetables and greens.
 
