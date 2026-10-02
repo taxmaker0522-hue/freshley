@@ -55,3 +55,20 @@ h2 {
   outline: 2px solid var(--color-tomato);
   outline-offset: 2px;
 }
+
+/* Admin > Orders > "Print" button: print only the packing-totals card, full
+   width, nothing else on the page (classic "print one element" technique). */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #packing-totals,
+  #packing-totals * {
+    visibility: visible;
+  }
+  #packing-totals {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+  }
+}

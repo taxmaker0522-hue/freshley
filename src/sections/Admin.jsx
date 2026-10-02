@@ -37,6 +37,41 @@ function Stat({ label, value }) {
   )
 }
 
+// A big, scannable table for one group (vegetables or leafy greens) in the
+// packing-totals summary — sized for a quick glance while actually packing.
+function TotalsTable({ title, rows, byId, nameOf }) {
+  const total = rows.reduce((sum, [, count]) => sum + count, 0)
+  return (
+    <div className={card}>
+      <div className="flex items-baseline justify-between gap-2">
+        <h4 className="font-heading text-base font-semibold text-soil">{title}</h4>
+        <span className="text-sm text-secondary">
+          {rows.length} {rows.length === 1 ? 'item' : 'items'} · {total} total
+        </span>
+      </div>
+      {rows.length === 0 ? (
+        <p className="mt-3 text-sm text-secondary">None today.</p>
+      ) : (
+        <table className="mt-3 w-full border-collapse">
+          <tbody>
+            {rows.map(([id, count]) => (
+              <tr key={id} className="border-b border-leaf/10 last:border-0">
+                <td className="py-2.5 pr-3 text-base text-soil">
+                  <span className="font-emoji mr-2" aria-hidden="true">
+                    {byId.get(id)?.emoji}
+                  </span>
+                  {nameOf(id)}
+                </td>
+                <td className="py-2.5 text-right font-heading text-xl font-semibold text-leaf tabular-nums">× {count}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  )
+}
+
 // ---------------------------------------------------------------- orders
 
 function OrdersTab() {
@@ -73,18 +108,37 @@ function OrdersTab() {
       setLoaded((prev) => ({ ...prev, list: prev.list.map((o) => (o.id === order.id ? { ...o, status } : o)) }))
   }
 
-  // How many of each item to pack for this day (skipped baskets excluded).
+  // How many of each item to pack for this day (skipped baskets excluded),
+  // split into vegetables and leafy greens so packing matches how the two
+  // are actually sourced/stored.
   const packTotals = useMemo(() => {
     const counts = new Map()
     for (const order of orders ?? []) {
       if (order.status === 'skipped') continue
       for (const id of [...order.vegetables, ...order.leafyGreens]) counts.set(id, (counts.get(id) ?? 0) + 1)
     }
-    return [...counts].sort((a, b) => b[1] - a[1])
-  }, [orders])
+    const sorted = [...counts].sort((a, b) => b[1] - a[1])
+    return {
+      vegetables: sorted.filter(([id]) => byId.get(id)?.kind !== 'leafy'),
+      leafyGreens: sorted.filter(([id]) => byId.get(id)?.kind === 'leafy'),
+    }
+  }, [orders, byId])
 
   const countBy = (status) => (orders ?? []).filter((o) => o.status === status).length
   const nameOf = (id) => byId.get(id)?.name ?? id
+
+  function downloadPackingCsv() {
+    const rows = [['Type', 'Item', 'Quantity']]
+    for (const [id, count] of packTotals.vegetables) rows.push(['Vegetable', nameOf(id), count])
+    for (const [id, count] of packTotals.leafyGreens) rows.push(['Leafy green', nameOf(id), count])
+    const csv = rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n')
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }))
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `packing-totals-${date}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -126,15 +180,24 @@ function OrdersTab() {
             <Stat label="Delivered" value={countBy('delivered')} />
           </div>
 
-          <div className={card}>
-            <h3 className="font-heading text-lg font-semibold text-soil">Packing totals</h3>
-            <ul className="mt-3 flex flex-wrap gap-2">
-              {packTotals.map(([id, count]) => (
-                <li key={id} className="rounded-full bg-lime/15 px-3 py-1.5 text-sm text-soil">
-                  {byId.get(id)?.emoji} {nameOf(id)} <span className="font-semibold">× {count}</span>
-                </li>
-              ))}
-            </ul>
+          <div id="packing-totals">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h3 className="font-heading text-lg font-semibold text-soil">
+                Packing totals <span className="font-body text-base font-normal text-secondary">— {formatDate(date)}</span>
+              </h3>
+              <div className="flex gap-2 print:hidden">
+                <Button variant="secondary" size="sm" onClick={() => window.print()}>
+                  Print
+                </Button>
+                <Button variant="secondary" size="sm" onClick={downloadPackingCsv}>
+                  Download CSV
+                </Button>
+              </div>
+            </div>
+            <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <TotalsTable title="Vegetables" rows={packTotals.vegetables} byId={byId} nameOf={nameOf} />
+              <TotalsTable title="Leafy greens" rows={packTotals.leafyGreens} byId={byId} nameOf={nameOf} />
+            </div>
           </div>
 
           <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2">
