@@ -1,7 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react'
-import Blob from '../components/Blob'
 import Button from '../components/Button'
-import ProduceScene from '../components/ProduceScene'
+import SunriseHero from '../components/SunriseHero'
 import { delivery, site } from '../data/site'
 
 const trustChips = ['Harvested at fresh water sources', 'Hand-graded & sorted', `Delivery ${delivery.time}`]
@@ -25,8 +24,7 @@ function Hero() {
       className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-8 sm:px-6 sm:py-12 lg:grid-cols-2 lg:gap-16 lg:px-16 lg:py-16"
     >
       <div className="relative order-1 lg:order-2">
-        <Blob className="inset-4" />
-        <ProduceScene />
+        <SunriseHero />
       </div>
 
       <motion.div
@@ -53,7 +51,7 @@ function Hero() {
           variants={itemVariants}
           className="mx-auto mt-5 max-w-md text-lg text-secondary lg:mx-0"
         >
-          Vegetables are hand-graded and sorted, then delivered direct to your home.
+          Choose your vegetables, pick your day — hand-graded and delivered to your door every week.
         </motion.p>
 
         <motion.div
