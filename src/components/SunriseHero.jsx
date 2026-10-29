@@ -98,7 +98,7 @@ const STAGE_SVG = `<svg viewBox="0 0 1920 1080" role="img" aria-hidden="true" xm
     <line id="hourHand" x1="0" y1="0" x2="0" y2="-82" stroke="#183824" stroke-width="14" stroke-linecap="round"/>
     <line id="minHand" x1="0" y1="0" x2="0" y2="-128" stroke="#D23F27" stroke-width="9" stroke-linecap="round"/>
     <circle r="12" fill="#183824"/>
-    <text id="clockLabel" y="250" text-anchor="middle" font-family="'Fraunces',serif" font-weight="700" font-size="64" fill="#183824">7:00 AM</text>
+    <text id="clockLabel" y="250" text-anchor="middle" font-family="'Fraunces',serif" font-weight="700" font-size="64" fill="#183824">6:15 AM</text>
   </g>
   <g id="crate">
     <g filter="url(#wilt)">
@@ -405,7 +405,9 @@ function runEngine(root, reduceMotion) {
     const mt = eio(lin(f, 175, 265))
     set($('minHand'), 'transform', `rotate(${270 * mt})`)
     set($('hourHand'), 'transform', `rotate(${22.5 * mt})`)
-    $('clockLabel').textContent = '7:' + String(Math.round(45 * mt)).padStart(2, '0') + ' AM'
+    // Counts up to 7:00 AM (never past it) — racing to beat the market-run cutoff the headline names.
+    const clockMinutes = 6 * 60 + 15 + Math.round(45 * mt) // 6:15 -> 7:00
+    $('clockLabel').textContent = `${Math.floor(clockMinutes / 60)}:${String(clockMinutes % 60).padStart(2, '0')} AM`
     const cr = back(lin(f, 158, 188))
     set($('crate'), 'transform', `translate(1270 ${mix(680, 620, cr)})`)
     set($('crate'), 'opacity', lin(f, 158, 170))
