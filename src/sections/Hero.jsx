@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'motion/react'
 import Blob from '../components/Blob'
 import Button from '../components/Button'
 import ProduceScene from '../components/ProduceScene'
-import { delivery } from '../data/site'
+import { delivery, site } from '../data/site'
 
 const trustChips = ['Harvested at fresh water sources', 'Hand-graded & sorted', `Delivery ${delivery.time}`]
 
@@ -35,9 +35,16 @@ function Hero() {
         animate="show"
         variants={containerVariants}
       >
+        <motion.p
+          variants={itemVariants}
+          className="text-xs font-semibold tracking-[0.18em] text-leaf uppercase"
+        >
+          {site.tagline}
+        </motion.p>
+
         <motion.h1
           variants={itemVariants}
-          className="text-3xl font-semibold leading-[1.1] text-soil sm:text-5xl lg:text-display"
+          className="mt-3 text-3xl font-semibold leading-[1.1] text-soil sm:text-5xl lg:text-display"
         >
           Farm-fresh vegetables at your <em className="italic text-leaf">door step</em>
         </motion.h1>

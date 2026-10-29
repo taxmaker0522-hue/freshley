@@ -1,3 +1,4 @@
+import Wordmark from '../components/Wordmark'
 import { liveFarms } from '../data/farms'
 import { delivery, site, WHATSAPP_NUMBER } from '../data/site'
 
@@ -84,8 +85,9 @@ function Footer() {
           <div>
             <div className="flex items-center gap-2">
               <LeafMark className="h-6 w-6 text-lime" />
-              <span className="font-heading text-lg font-semibold text-cream">{site.name}</span>
+              <Wordmark className="text-lg" dark />
             </div>
+            <p className="mt-1.5 text-xs font-medium tracking-wide text-cream/60">{site.tagline}</p>
             <p className="mt-3 max-w-xs text-sm text-cream/70">
               Fresh vegetables and leafy greens, harvested at fresh water sources, hand-graded and
               sorted, delivered from farms we know by name — every week, {delivery.time}.

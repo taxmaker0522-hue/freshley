@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Button from '../components/Button'
+import Wordmark from '../components/Wordmark'
 import { liveFarms } from '../data/farms'
 import { site } from '../data/site'
 import { openAuthSheet, useAuth } from '../hooks/useAuth'
@@ -31,8 +32,11 @@ function Logo() {
   return (
     <a href="#top" className="flex items-center gap-2">
       <LeafMark className="h-8 w-8 text-leaf" />
-      <span className="font-heading text-2xl font-semibold tracking-tight text-soil">
-        {site.name}
+      <span className="flex flex-col leading-tight">
+        <Wordmark className="text-2xl" />
+        <span className="hidden text-[0.6875rem] font-medium tracking-wide text-secondary sm:block">
+          {site.tagline}
+        </span>
       </span>
     </a>
   )
