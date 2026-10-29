@@ -21,7 +21,7 @@ function Hero() {
   return (
     <section
       id="hero"
-      className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-8 sm:px-6 sm:py-12 lg:grid-cols-2 lg:gap-16 lg:px-16 lg:py-16"
+      className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-8 sm:px-6 sm:py-12 lg:grid-cols-[1fr_1.2fr] lg:gap-12 lg:px-16 lg:py-16"
     >
       <div className="relative order-1 lg:order-2">
         <SunriseHero />
